@@ -44,3 +44,18 @@
 
 > multiRotation' :: Echar -> [Rotor] -> Int -> Echar
 > multiRotation' e rs ns = multiRotation e rs (convertBase' (length rs) ns)
+
+
+Decoding
+
+> reverseRotation :: Echar -> [Rotor] -> [Int] -> Echar
+> reverseRotation e [] _ = e
+> reverseRotation e _ [] = e
+> reverseRotation e (r:rs) (n:ns) = reverseRotation e'' rs ns
+>   where e' = rotateLetter r e
+>         e'' = rotateRotor (negate n) e'
+
+> reverseRotation' :: Echar -> [Rotor] -> Int -> Echar
+> reverseRotation' e rs ns = reverseRotation e rs' ns'
+>   where rs' = reverse rs
+>         ns' = reverse (convertBase' (length rs) ns)
