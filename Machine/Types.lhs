@@ -20,3 +20,18 @@
 >               ('q', Q), ('Q', Q), ('r', R), ('R', R), ('s', S), ('S', S), ('t', T), ('T', T),
 >               ('u', U), ('U', U), ('v', V), ('V', V), ('w', W), ('W', W), ('x', X), ('X', X),
 >               ('y', Y), ('Y', Y), ('z', Z), ('Z', Z)]
+
+> charMap :: Map.Map Char Echar
+> charMap = Map.fromList eHashTable
+
+> charToEchar :: Char -> Maybe Echar
+> charToEchar c = Map.lookup c charMap
+
+
+Decoding: 
+
+> echarMap :: Map.Map Echar Char
+> echarMap  = Map.fromList $ map swap $ filter (not . isLower . fst) eHashTable
+
+> echarToChar :: Echar -> Maybe Char
+> echarToChar e = Map.lookup e echarMap
