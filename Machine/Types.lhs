@@ -1,4 +1,4 @@
-> module Machine.Types where
+> module Types where
 
 > import qualified Data.Map as Map (Map, lookup, fromList)
 > import Data.Char (isLower)
