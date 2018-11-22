@@ -27,7 +27,7 @@
 > rotorII = makeRotor  (zip eRII alphabet)
 > rotorIII = makeRotor  (zip eRIII alphabet)
 
-> enigmaMachine = Machine [rotorI] 0
+> enigmaMachine = Machine [rotorI, rotorII, rotorIII] 0
 
 > encrypt :: Echar -> State Machine Echar
 > encrypt e = do
