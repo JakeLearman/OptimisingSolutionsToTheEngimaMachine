@@ -11,23 +11,25 @@
 > rotor1 = "EKMFLGDQVZNTOWYHXUSPAIBRCJ"
 > rotor2 = "AJDKSIRUXBLHWTMCQGZNPYFVOE"
 > rotor3 = "BDFHJLCPRTXVZNYEIWGAKMUSQO"
+> rotor4 = "ESOVPZJAYQUIRHXLNFTGKDCMWB"
+> rotor5 = "VZBRGITYUPSDNHLXAWMJQOFECK"
 
 > alphabet = stringToEchar "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
-> eRI :: [Echar]
 > eRI = stringToEchar rotor1
-
-> eRII :: [Echar]
 > eRII = stringToEchar rotor2
-
-> eRIII :: [Echar]
 > eRIII = stringToEchar rotor3
+> eRIV = stringToEchar rotor4
+> eRV = stringToEchar rotor5
 
 > rotorI = makeRotor (zip eRI alphabet)
-> rotorII = makeRotor  (zip eRII alphabet)
-> rotorIII = makeRotor  (zip eRIII alphabet)
+> rotorII = makeRotor (zip eRII alphabet)
+> rotorIII = makeRotor (zip eRIII alphabet)
+> rotorIV = makeRotor (zip eRIV alphabet)
+> rotorV = makeRotor (zip eRV alphabet)
 
-> enigmaMachine = Machine [rotorI, rotorII, rotorIII] 0
+> enigmaMachine :: Machine
+> enigmaMachine = Machine [rotorI, rotorII, rotorIII, rotorIV, rotorV] 0
 
 > encrypt :: Echar -> State Machine Echar
 > encrypt e = do

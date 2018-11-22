@@ -10,6 +10,6 @@
 > main = do
 >   input <- getLine
 >   let encryption = fst $ runState (encryptString (stringToEchar input)) enigmaMachine
+>   let decryption = fst $ runState (encryptString encryption) enigmaMachine
 >   print encryption
->   let decryption = fst $ runState (decryptString (encryption)) enigmaMachine
 >   print decryption
