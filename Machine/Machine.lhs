@@ -8,10 +8,26 @@
 
 > data Machine = Machine [Rotor] RotorPosition deriving (Show, Eq)
 
-> rotor1 = makeRotor  [ (A,B), (B,A), (C,D), (D,C) ]
-> rotor2 = makeRotor [ (A,C), (C,A), (B,D), (D,B) ]
+> rotor1 = "EKMFLGDQVZNTOWYHXUSPAIBRCJ"
+> rotor2 = "AJDKSIRUXBLHWTMCQGZNPYFVOE"
+> rotor3 = "BDFHJLCPRTXVZNYEIWGAKMUSQO"
 
-> enigmaMachine = Machine [rotor1, rotor2] 0
+> alphabet = stringToEchar "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+
+> eRI :: [Echar]
+> eRI = stringToEchar rotor1
+
+> eRII :: [Echar]
+> eRII = stringToEchar rotor2
+
+> eRIII :: [Echar]
+> eRIII = stringToEchar rotor3
+
+> rotorI = makeRotor (zip eRI alphabet)
+> rotorII = makeRotor  (zip eRII alphabet)
+> rotorIII = makeRotor  (zip eRIII alphabet)
+
+> enigmaMachine = Machine [rotorI] 0
 
 > encrypt :: Echar -> State Machine Echar
 > encrypt e = do

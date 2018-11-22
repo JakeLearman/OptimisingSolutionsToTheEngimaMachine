@@ -3,6 +3,7 @@
 > import qualified Data.Map as Map (Map, lookup, fromList)
 > import Data.Char (isLower)
 > import Data.Tuple (swap)
+> import Data.Maybe
 
 
 > data Echar  = A | B | C | D | E |F | G | H | I | J |
@@ -26,6 +27,10 @@
 
 > charToEchar :: Char -> Maybe Echar
 > charToEchar c = Map.lookup c charMap
+
+> stringToEchar :: [Char] ->  [Echar]
+> stringToEchar [] = []
+> stringToEchar (x:xs) = fromJust (charToEchar x) : stringToEchar xs
 
 > setMachineBase :: Int -> Echar
 > setMachineBase = toEnum . ((flip mod) sizeOfAlphabet)
