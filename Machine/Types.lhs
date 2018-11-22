@@ -27,6 +27,8 @@
 > charToEchar :: Char -> Maybe Echar
 > charToEchar c = Map.lookup c charMap
 
+> setMachineBase :: Int -> Echar
+> setMachineBase = toEnum . ((flip mod) sizeOfAlphabet)
 
 Decoding: 
 
