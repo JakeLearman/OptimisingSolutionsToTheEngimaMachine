@@ -11,16 +11,20 @@ the various rotors in the machine.
 c is the c is the char for which substitution is being handled
 s is the substitution of which the permutation of the alphabet is being represented
 
+> substitute :: [Char] -> Char -> Char
 > substitute s c = fromMaybe c $ lookup c $ zip alphabet s
 
+> unsubstitute :: [Char] -> Char -> Char
 > unsubstitute s c = fromMaybe c $ lookup c $ zip s alphabet
 
 A ceasar shift can also be implemented to account for the mapping of the alphabet to whatever
 order the rotor sets the alphabet to be
 The parameter k is used to represent the key of the shift
 
+> shift :: Char -> Char -> Char
 > shift k = substitute $ dropWhile (/= k) $ cycle alphabet
 
+> unshift :: Char -> Char -> Char
 > unshift k = unsubstitute $ dropWhile (/= k) $ cycle alphabet
 
 Now we can begin to define the enigma machine:
@@ -81,6 +85,7 @@ of the bool to check what the starting value of each rotor then checking if that
 in next rotor. 
 sR refers to the starting value in that rotor. nR refers to the next value in the rotor
 
+> rotation :: Enigma -> Enigma
 > rotation r = r {
 >     grundstellung = [bool sR1 (shift 'B' sR1) $ sR2 `elem` nR2,
 >     bool sR2 (shift 'B' sR2) $ sR2 `elem` nR2 || sR3 `elem` nR3, shift 'B' sR3
@@ -88,3 +93,10 @@ sR refers to the starting value in that rotor. nR refers to the next value in th
 >     where
 >      [sR1, sR2, sR3] = grundstellung r 
 >      [nR1, nR2, nR3] = snd <$> rotors r
+
+Next we apply the shift by conjugating with the alphabet
+
+> applyShift :: [Char] -> Char -> [Char]
+> applyShift c key = unshift key . substitute c . shift key <$> alphabet
+
+
