@@ -65,3 +65,15 @@ which made cracking the machine possible.
 > reflectorA = "EJMZALYXVBWFCRQUONTSPIKHGD"
 > reflectorB = "YRUHQSLDPXNGOKMIEBFZCWVJAT"
 > reflectorC = "FVPJIAOYEDRZXWGCTKUQSBNMHL"
+
+Now we can define the Enigma machine we wish to use:
+
+> enigmaMachine = Enigma { 
+>     rotors = [rotorI, rotorII, rotorIII}, 
+>     reflector = reflectorB,
+>     grundstellung = "AAA",
+>     ringstellung = "AAA"
+>     plugboard = alphabet }
+
+
+>
