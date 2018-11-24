@@ -1,6 +1,8 @@
 > module Enigma where
 
 > import Data.Bool
+> import Data.Char
+> import Data.List
 > import Data.Maybe
 
 > alphabet = ['A' .. 'Z']
@@ -34,7 +36,10 @@ which are some form of shifting letters from one to another. The Grundstellung i
 position of the rotors, this was chosen by the operator and was different for every message which
 is one of the reasons the encryption is so strong. The ringstellung is the inital ring setting 
 relative to the rotor discs, this setting is effectively an initialisation vector for the 
-encryption adding a level of randomness to the machines encryption.
+encryption adding a level of randomness to the machines encryption. The plugboard is a variable
+wiring system that would be manually reconfigured by the operator using patch cables. You could
+manually map letters together forming a 'steckered pair' of letters which swapped the letter 
+respectively both before and after the rotor scrambling
 
 > data Enigma = Enigma {
 >	rotors :: [(String, String)], reflector :: String,
@@ -97,6 +102,39 @@ sR refers to the starting value in that rotor. nR refers to the next value in th
 Next we apply the shift by conjugating with the alphabet
 
 > applyShift :: [Char] -> Char -> [Char]
-> applyShift c key = unshift key . substitute c . shift key <$> alphabet
+> applyShift cs key = unshift key . substitute cs . shift key <$> alphabet
 
+Then we can apply the rotation to the shifted input
 
+> applyRotation :: Enigma -> [[Char]]
+> applyRotation cs = zipWith applyShift (fst <$> rotors cs) 
+>     $ zipWith unshift (ringstellung cs) $ grundstellung cs
+
+We can then follow the process of the enigma machine e through the shifting,
+rotation, reflecting and the finally the plugboard mapping.
+
+> findMap :: Enigma -> Char -> Char
+> findMap e = plugboardOutput . unsubstitute rotatedInput . substitute (reflector e)
+>    .  substitute rotatedInput . plugboardOutput
+>    where
+>      rotatedInput = foldr1 (.) (substitute <$> applyRotation e) <$> alphabet
+>      plugboardOutput = substitute $ plugboard e
+
+Finally we create a function that take a letter, return it encrypted and increment the machine as necessary
+
+> encryptChar :: Enigma -> Char -> (Enigma, Char)
+> encryptChar machine c = bool(machine, c)(machine', findMap machine' c) $ isUpper c
+>    where machine' = rotation machine
+
+> encryption :: Traversable t => Enigma -> t Char -> t Char
+> encryption machine = snd . mapAccumL encryptChar machine
+
+> runMachine :: Traversable t => t Char -> t Char
+> runMachine cs = encryption (enigmaMachine { ringstellung = "BBB" }) cs
+
+> main = do
+> 	input <- getLine
+>	let output = runMachine input
+>	let decrypt = runMachine output
+>	putStrLn output
+>	putStrLn decrypt 
