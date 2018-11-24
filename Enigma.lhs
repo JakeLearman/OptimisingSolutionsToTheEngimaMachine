@@ -134,7 +134,8 @@ Finally we create a function that take a letter, return it encrypted and increme
 
 > main = do
 > 	input <- getLine
->	let output = runMachine input
+>	let upper = map toUpper input
+>	let output = runMachine upper
 >	let decrypt = runMachine output
 >	putStrLn output
 >	putStrLn decrypt 
