@@ -121,10 +121,11 @@ rotation, reflecting and the finally the plugboard mapping.
 >      rotatedInput = foldr1 (.) (substitute <$> applyRotation e) <$> alphabet
 >      plugboardOutput = substitute $ plugboard e
 
-Finally we create a function that take a letter, return it encrypted and increment the machine as necessary
+Finally we create a function that take a letter, return it encrypted and increment the
+machine as necessary.
 
 > encryptChar :: Enigma -> Char -> (Enigma, Char)
-> encryptChar machine c = bool(machine, c)(machine', findMap machine' c) $ isUpper c
+> encryptChar machine c = bool(machine, c)(machine', findMap machine' c) $ isLetter c
 >    where machine' = rotation machine
 
 > encryption :: Traversable t => Enigma -> t Char -> t Char
