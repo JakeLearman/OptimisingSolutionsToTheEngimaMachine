@@ -36,6 +36,8 @@ encryption adding a level of randomness to the machines encryption.
 >	grundstellung :: String, ringstellung :: String,
 >	plugboard :: String } deriving (Eq, Show)
 
+Rotors:
+
 The M3 Army Enigma Machine was adopted by the German army in 1930 and later the Navy in 1934.
 Origionally the machine had 3 rotors but a later 2 were added in 1938, giving the operator a 
 choice of 3 out of 5. In 1939 the Navy added two more rotors: these are defined as strings below.
@@ -53,3 +55,13 @@ The letters at the end of the rotor definintions are the turnover notches. These
 if a specific shift in letter occur, it would rotor the next rotor as well as the one being
 used.
 
+Reflectors:
+
+A reflector (or reversal rotor) is where the outputs of the final rotor were connected in 
+pairs and then redirected back through the rotors via a different route. This ensured that no
+letter could be mapped back to itself and that encryption was the same as decryption - a  flaw 
+which made cracking the machine possible.
+
+> reflectorA = "EJMZALYXVBWFCRQUONTSPIKHGD"
+> reflectorB = "YRUHQSLDPXNGOKMIEBFZCWVJAT"
+> reflectorC = "FVPJIAOYEDRZXWGCTKUQSBNMHL"
