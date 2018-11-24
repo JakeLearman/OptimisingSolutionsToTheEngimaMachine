@@ -1,5 +1,6 @@
 > module Enigma where
 
+> import Data.Bool
 > import Data.Maybe
 
 > alphabet = ['A' .. 'Z']
@@ -69,11 +70,21 @@ which made cracking the machine possible.
 Now we can define the Enigma machine we wish to use:
 
 > enigmaMachine = Enigma { 
->     rotors = [rotorI, rotorII, rotorIII}, 
+>     rotors = [rotorI, rotorII, rotorIII], 
 >     reflector = reflectorB,
 >     grundstellung = "AAA",
->     ringstellung = "AAA"
+>     ringstellung = "AAA",
 >     plugboard = alphabet }
 
+The rotation function handles the rotation of a rotor. This function performs a case analysis
+of the bool to check what the starting value of each rotor then checking if that is an element
+in next rotor. 
+sR refers to the starting value in that rotor. nR refers to the next value in the rotor
 
->
+> rotation r = r {
+>     grundstellung = [bool sR1 (shift 'B' sR1) $ sR2 `elem` nR2,
+>     bool sR2 (shift 'B' sR2) $ sR2 `elem` nR2 || sR3 `elem` nR3, shift 'B' sR3
+>	  ]} 
+>     where
+>      [sR1, sR2, sR3] = grundstellung r 
+>      [nR1, nR2, nR3] = snd <$> rotors r
