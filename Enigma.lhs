@@ -85,6 +85,7 @@ Now we can define the Enigma machine we wish to use:
 >     ringstellung = "AAA",
 >     plugboard = alphabet }
 
+
 The rotation function handles the rotation of a rotor. This function performs a case analysis
 of the bool to check what the starting value of each rotor then checking if that is an element
 in next rotor. 
