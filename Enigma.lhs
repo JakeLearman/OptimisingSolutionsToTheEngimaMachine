@@ -5,6 +5,8 @@
 > import Data.List
 > import Data.Maybe
 
+The reverse of each function has been implemented to account for testing the encryption
+
 > alphabet = ['A' .. 'Z']
 
 Two functions are then defined to handle the substitution of letter when passed throughout 
@@ -39,7 +41,7 @@ relative to the rotor discs, this setting is effectively an initialisation vecto
 encryption adding a level of randomness to the machines encryption. The plugboard is a variable
 wiring system that would be manually reconfigured by the operator using patch cables. You could
 manually map letters together forming a 'steckered pair' of letters which swapped the letter 
-respectively both before and after the rotor scrambling
+respectively both before and after the rotor scrambling.
 
 > data Enigma = Enigma {
 >	rotors :: [(String, String)], reflector :: String,
@@ -51,6 +53,7 @@ Rotors:
 The M3 Army Enigma Machine was adopted by the German army in 1930 and later the Navy in 1934.
 Origionally the machine had 3 rotors but a later 2 were added in 1938, giving the operator a 
 choice of 3 out of 5. In 1939 the Navy added two more rotors: these are defined as strings below.
+A 4 rotor Enigma was implemented in 1942 so rotors have been added to account for that.
 
 > rotorI   = ("EKMFLGDQVZNTOWYHXUSPAIBRCJ", "Q")
 > rotorII  = ("AJDKSIRUXBLHWTMCQGZNPYFVOE", "E")
@@ -78,7 +81,7 @@ which made cracking the machine possible.
 
 Now we can define the Enigma machine we wish to use:
 
-> enigmaMachine = Enigma { 
+> enigmaMachine = Enigma {
 >     rotors = [rotorI, rotorII, rotorIII], 
 >     reflector = reflectorB,
 >     grundstellung = "AAA",
@@ -131,13 +134,15 @@ machine as necessary.
 > encryption :: Traversable t => Enigma -> t Char -> t Char
 > encryption machine = snd . mapAccumL encryptChar machine
 
+The run machine function is used to traverse a string of chars, apply encryption to each one via the engima machine
+
 > runMachine :: Traversable t => t Char -> t Char
 > runMachine cs = encryption (enigmaMachine { ringstellung = "BBB" }) cs
 
 > main = do
 > 	input <- getLine
 >	let upper = map toUpper input
->	let output = runMachine upper
+>	let output = runMachine upper 
 >	let decrypt = runMachine output
 >	putStrLn output
 >	putStrLn decrypt 
