@@ -111,8 +111,7 @@ Next we apply the shift by conjugating with the alphabet
 Then we can apply the rotation to the shifted input
 
 > applyRotation :: Enigma -> [[Char]]
-> applyRotation cs = zipWith applyShift (fst <$> rotors cs)
->     $ zipWith unshift (ringstellung cs) $ grundstellung cs
+> applyRotation cs = zipWith applyShift (fst <$> rotors cs) $ zipWith unshift (ringstellung cs) $ grundstellung cs
 
 We can then follow the process of the enigma machine e through the shifting,
 rotation, reflecting and the finally the plugboard mapping.
