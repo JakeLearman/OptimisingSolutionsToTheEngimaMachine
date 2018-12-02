@@ -137,7 +137,7 @@ machine as necessary.
 The run machine function is used to traverse a string of chars, apply encryption to each one via the engima machine
 
 > runMachine :: Traversable t => t Char -> t Char
-> runMachine cs = encryption (enigmaMachine { ringstellung = "BBB" }) cs
+> runMachine cs = encryption (enigmaMachine) cs
 
 > main = do
 > 	input <- getLine
