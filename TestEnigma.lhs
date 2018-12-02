@@ -9,8 +9,7 @@ Testing substitution
 
 > permutation key = nub $ filter isUpper key ++ alphabet
 
-> prop_checkSubsitution key = (unsubstitute ( permutation key) . 
->                              substitute (permutation key)  <$> alphabet) == alphabet 
+> prop_checkSubsitution key = (unsubstitute ( permutation key) . substitute (permutation key)  <$> alphabet) == alphabet
 
 Testing reflectors:
 
@@ -21,7 +20,7 @@ Testing Shift of mapping
 
 > prop_mapping = findMap enigmaMachine 'A' == 'U'
 
-Testing encryption: 
+Testing encryption:
 
 > prop_enigmaEncryption = encryption (enigmaMachine { ringstellung = "BBB" }) "AAAAA" == "EWTYX"
 
