@@ -32,9 +32,12 @@ A test machine with no rotors set up
 >     grundstellung = "AAA",
 >     ringstellung = "AAA",
 >     plugboard = alphabet }
-
+]
 
 > brute = do
 >   input <- getLine
 >   let encryptedOutput = runMachine (map toUpper input) 
+>   putStr "This is the input text: "
+>   putStrLn input
+>   putStr "This is the input text encrypted: "
 >   putStrLn encryptedOutput
