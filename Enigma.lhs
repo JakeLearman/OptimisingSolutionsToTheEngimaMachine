@@ -31,7 +31,7 @@ The parameter k is used to represent the key of the shift
 > unshift :: Char -> Char -> Char
 > unshift k = unsubstitute $ dropWhile (/= k) $ cycle alphabet
 
-Now we can begin to define the enigma machine:
+Now we can begin to define the enigma machine: 
 
 The Enigma machine has 3 main components, the rotors, the reflectors and the plugboard. All of
 which are some form of shifting letters from one to another. The Grundstellung is the starting
