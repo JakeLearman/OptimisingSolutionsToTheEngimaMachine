@@ -1,4 +1,4 @@
-> module Brute where
+> module Crib where
 
 > import Enigma 
 > import Data.List as List
@@ -121,7 +121,3 @@ groupByVertex groups each pair into a list of each vertex and each letter that i
 
 > groupByVertex :: Ord a => [(a, b)] -> Map a [b]
 > groupByVertex listOfPairs = fromListWith (++) [(a, [b]) | (a, b) <- listOfPairs]
-
----------------
-Menu Generation
----------------
