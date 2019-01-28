@@ -17,13 +17,6 @@ A function to create a list of all possible rotor combination
 > combinations [] = []
 > combinations (x : xs) = map ((,) x) xs ++ combinations xs
 
-A simple looping function
-
-> looper :: (Eq a, Num a) => a -> IO()
-> looper 0  = return ()
-> looper n = do
->    putStrLn "This is temp"
-
 A test machine with no rotors set up
 
 > testMachine = Enigma {
@@ -32,7 +25,6 @@ A test machine with no rotors set up
 >     grundstellung = "AAA",
 >     ringstellung = "AAA",
 >     plugboard = alphabet }
-]
 
 > brute = do
 >   input <- getLine
@@ -41,3 +33,6 @@ A test machine with no rotors set up
 >   putStrLn input
 >   putStr "This is the input text encrypted: "
 >   putStrLn encryptedOutput
+>   putStr "Input a crib: "
+>   crib <- getLine
+>   putStrLn crib
