@@ -7,7 +7,7 @@
 
 The reverse of each function has been implemented to account for testing the encryption
 
-> alphabet = ['A' .. 'Z']
+> alphabet = cycle ['A' .. 'Z']
 
 Two functions are then defined to handle the substitution of letter when passed throughout
 the various rotors in the machine.
