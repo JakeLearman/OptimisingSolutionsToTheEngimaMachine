@@ -55,7 +55,7 @@ findNoCrashes is used to return the best shifted crib with the encrypted string.
 a letter in the crib matches the letter at the same index in the encrypted string. This is because the enigma machine cannot map
 letters to itself. Once this returns a valid list of pairs.
 
-For example is we have a string KEINEBESONDERENEREIGNISSE and an encrypted string UAENFVRLBZPWMEPMIHFSRJXFMJKWRAXQEZ we would get
+For example is we have a string KEINEBESONDERENEREIGNISSE and an encrypted string "UAENFVRLBZPWMEPMIHFSRJXFMJKWRAXQEZ" we would get
 returned [(' ','U'),(' ','A'),(' ','E'),(' ','N'),(' ','F'),('K','V'),('E','R'),('I','L'),('N','B'),('E','Z'),('B','P'),
 ('E','W'),('S','M'),('O','E'),('N','P'),('D','M'),('E','I'),('R','H'),('E','F'),('N','S'),('E','R'),('R','J'),('E','X'),
 ('I','F'),('G','M'),('N','J'),('I','K'),('S','W'),('S','R'),('E','A')] as a list of pair. Note the offset of 5 letters to account
@@ -114,10 +114,13 @@ Flatten flattens a list
 groupTuples' groups both grouped lists from groupTuples and groupTuplesSnd, flattens the list such that all elements are on the same level and
 then removes any duplicate values in the list
 
+> joinLists :: String -> String -> [[(Char, Char)]]
+> joinLists crib encrypted = (groupTuples crib encrypted) ++ (groupTuplesSnd crib encrypted)
+
 > groupTuples' :: String -> String -> [(Char, Char)]
-> groupTuples' crib encrypted =  nub (flatten ((groupTuples crib encrypted) ++ (groupTuplesSnd crib encrypted)))
+> groupTuples' crib encrypted =  nub (flatten (joinLists crib encrypted))
 
 groupByVertex groups each pair into a list of each vertex and each letter that is linked to that vertex
 
-> groupByVertex :: Ord a => [(a, b)] -> Map a [b]
-> groupByVertex listOfPairs = fromListWith (++) [(a, [b]) | (a, b) <- listOfPairs]
+> groupByVertex :: (Eq a, Ord a) => [(a, b)] -> [(a, [b])]
+> groupByVertex = List.map (\l -> (fst . head $ l, List.map snd l)) . groupBy ((==) `on` fst) . sortBy (comparing fst)
