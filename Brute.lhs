@@ -1,8 +1,12 @@
 > module Brute where
 
 > import Enigma 
-> import Data.List
+> import Data.List as List
 > import Data.Char
+> import Data.Ord
+> import Data.Tuple
+> import Data.Map as Map
+> import Data.Function
 
 This basic brute force will only account for the possible combinations of rotors, not the plugboard or reflectors
 
@@ -15,7 +19,7 @@ A function to create a list of all possible rotor combination
 
 > combinations :: [a] -> [(a, a)]
 > combinations [] = []
-> combinations (x : xs) = map ((,) x) xs ++ combinations xs
+> combinations (x : xs) = List.map ((,) x) xs ++ combinations xs
 
 A test machine with no rotors set up
 
@@ -26,13 +30,16 @@ A test machine with no rotors set up
 >     ringstellung = "AAA",
 >     plugboard = alphabet }
 
+------------------------
+Cracking the machine:
+------------------------
 The first step in attempting to crack the enigma machine is to find a crib. A crib is plaintext known to be in encrypted
 string. alignCrib is responsible for comparing the crib and the encrypted string in order to see if any character is in the 
 index in both strings
 
 > alignCrib :: String -> String -> String
 > alignCrib [] [] = []
-> alignCrib crib encryptedOutput = map fst . filter (uncurry (==)) $ zip crib encryptedOutput
+> alignCrib crib encryptedOutput = List.map fst . List.filter (uncurry (==)) $ zip crib encryptedOutput
 
 filterAlignment returns a bool depending on whether or not cribs can be aligned without error
 
@@ -55,32 +62,66 @@ returned [(' ','U'),(' ','A'),(' ','E'),(' ','N'),(' ','F'),('K','V'),('E','R'),
 for the N's and E's matching in the original postions of the crib.
 
 > findNoCrashes :: String -> String -> [(Char, Char)]
-> findNoCrashes crib encryptedOutput =  if (filterAlignment crib encryptedOutput) == True then (zip crib encryptedOutput) else findNoCrashes (shiftCrib crib) encryptedOutput
+> findNoCrashes crib encrypted =  if (filterAlignment crib encrypted) == True then (zip crib encrypted) else findNoCrashes (shiftCrib crib) encrypted
 
 Assuing that we have a valid crib and now have calculated the offset, we can then filter out all letters which are encrypted more than
 once. For example using the above example:
         Word : U|A|E|N|F|V|R|L|B|Z|P|W|M|E|P|M|I|H|F|S|R|J|X|F|M|J|K|W|R|A|X|Q|E|Z|
         Crib : | | | | | K|E|I|N|E|B|E|S|O|N|D|E|R|E|N|E|R|E|I|G|N|I|S|S|E|
+        
+----------------
+Finding Loops
+----------------
 
-Remove removeDuplicates is used to compare the list of tuples to remove any where either the key or the value are the same
+A loop is a term used to refer to a closed cycle of letter pairings. Using the above example we can see that B is encrypted to P,
+N is also encrypted to P and N is encrypted to B this relationship can be used to take advantage of the machine.
 
-> removeDuplicates xs = nubBy compare xs 
->  where
->    compare (x, y) (x', y') = x == x' || y == y'
+setUpForLoop removes any pairs containing spaces such that the list of tuples has already handled the offset 
 
+> setUpForLoop :: [(Char, Char)] -> [(Char, Char)]
+> setUpForLoop alignedText = [c | c <- alignedText, fst c /= ' ']
 
-> brute = do
->   input <- getLine
->   let encryptedOutput = runMachine (map toUpper input) 
->   putStr "This is the input text: "
->   putStrLn input
->   putStr "This is the input text encrypted: "
->   putStrLn encryptedOutput
->   putStr "Input a crib: "
->   crib <- getLine
+orderTuples orders the list of tuples in descending order according the the first letter in each pair.
 
-   alignCrib crib encryptedOutput
+> orderTuples :: String -> String -> [(Char, Char)]
+> orderTuples crib encrypted = sortBy (comparing fst) (setUpForLoop (findNoCrashes crib encrypted))
 
->   putStrLn crib
->   let crib2 = shiftCrib crib
->   putStrLn crib2
+This does the same as above but sorts by the second element
+
+> orderTuplesSnd :: String -> String -> [(Char, Char)]
+> orderTuplesSnd crib encrypted = sortBy (comparing snd) (setUpForLoop (findNoCrashes crib encrypted))
+
+groupTuples splits the list of ordered tuples into lists where the first value is the same
+
+> groupTuples :: String -> String -> [[(Char, Char)]]
+> groupTuples crib encrypted = groupBy ((==) `on` fst) ((orderTuples crib encrypted))
+
+invert inverts the order of the elements in a tuples
+
+> invert :: [(a, b)] -> [(b, a)]
+> invert = List.map swap
+
+groupTuplesSnd splits the list of ordered pairs into lists where the second element is the same and then sorted so that the second element is first
+
+> groupTuplesSnd :: String -> String -> [[(Char, Char)]]
+> groupTuplesSnd crib encrypted = groupBy ((==) `on` snd) (invert(orderTuplesSnd crib encrypted))
+
+Flatten flattens a list 
+
+> flatten :: [[a]] -> [a]         
+> flatten xs = (\z n -> List.foldr (\x y -> List.foldr z y x) n xs) (:) []
+
+groupTuples' groups both grouped lists from groupTuples and groupTuplesSnd, flattens the list such that all elements are on the same level and
+then removes any duplicate values in the list
+
+> groupTuples' :: String -> String -> [(Char, Char)]
+> groupTuples' crib encrypted =  nub (flatten ((groupTuples crib encrypted) ++ (groupTuplesSnd crib encrypted)))
+
+groupByVertex groups each pair into a list of each vertex and each letter that is linked to that vertex
+
+> groupByVertex :: Ord a => [(a, b)] -> Map a [b]
+> groupByVertex listOfPairs = fromListWith (++) [(a, [b]) | (a, b) <- listOfPairs]
+
+---------------
+Menu Generation
+---------------
