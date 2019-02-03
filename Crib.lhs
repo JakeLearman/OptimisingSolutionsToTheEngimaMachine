@@ -119,8 +119,3 @@ then removes any duplicate values in the list
 
 > groupTuples' :: String -> String -> [(Char, Char)]
 > groupTuples' crib encrypted =  nub (flatten (joinLists crib encrypted))
-
-groupByVertex groups each pair into a list of each vertex and each letter that is linked to that vertex
-
-> groupByVertex :: (Eq a, Ord a) => [(a, b)] -> [(a, [b])]
-> groupByVertex = List.map (\l -> (fst . head $ l, List.map snd l)) . groupBy ((==) `on` fst) . sortBy (comparing fst)

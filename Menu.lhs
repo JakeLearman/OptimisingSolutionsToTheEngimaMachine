@@ -5,33 +5,60 @@
 > import Data.List
 > import Data.Maybe
 > import Data.Char
+> import Data.Graph (Graph)
+> import qualified Data.Graph as Graph
+> import Data.Array
+> import Data.Function
+> import Data.Ord
 
 ---------------
 Menu Generation
 ---------------
 A menu is a graph showing all the connections between the letters in both the crib and the encrypted Word
 
-> type Vertex = Char
-> type Edge = [Vertex]
-> type Graph = [Edge]
+
+> menu :: [[Char]]
+> menu = tuplesToList (groupTuples' "KEINEBESONDERENEREIGNISSE" "UAENFVRLBZPWMEPMIHFSRJXFMJKWRAXQEZ")
 
 > tuplesToList :: [(a,a)] -> [[a]]
 > tuplesToList = map (\(x,y) -> [x,y])
+
+> listToTuple :: [a] -> (a,a)
+> listToTuple  [x,y] = (x,y)
 
 > c2i :: Char -> Int
 > c2i c = ord c
 
 > s2i :: String -> [Int]
+> s2i [] = []
 > s2i (x:xs) = c2i x : s2i xs
 
 > i2c :: Int -> Char
 > i2c i = chr i
 
-> incChar :: Char -> Char
-> incChar c =  alphabet !! ((fromJust(elemIndex c alphabet)) + 1)
+> menuToInt :: [String] -> [[Int]]
+> menuToInt [] = []
+> menuToInt (m:ms) = s2i m : menuToInt ms
 
-> menu = tuplesToList (groupTuples' "KEINEBESONDERENEREIGNISSE" "UAENFVRLBZPWMEPMIHFSRJXFMJKWRAXQEZ")
+> menuToTuple :: [String] -> [(Char, Char)]
+> menuToTuple [] = []
+> menuToTuple (x:xs) = listToTuple x : menuToTuple xs
 
-> isAdjacent :: Vertex -> Vertex -> Graph -> Bool
-> isAdjacent x y [] = False
-> isAdjacent x y (z:zs) = if x == head z && y == last z then True else isAdjacent x y zs
+> tuplesToInt :: (Char, Char) -> (Int, Int)
+> tuplesToInt t = (c2i(fst t), c2i(snd t))
+
+> tuplesToInt' :: [(Char, Char)] -> [(Int, Int)]
+> tuplesToInt' ts = map tuplesToInt ts
+
+groupByVertex groups each pair into a list of each vertex and each letter that is linked to that vertex
+
+> groupByVertex :: (Eq a, Ord a) => [(a, b)] -> [(a, [b])]
+> groupByVertex = map (\l -> (fst . head $ l, map snd l)) . groupBy ((==) `on` fst) . sortBy (comparing fst)
+
+> prepGraph = groupByVertex(tuplesToInt'(menuToTuple menu))
+
+-------------------------
+----Graph Generation-----
+-------------------------
+
+type Graph = [(a, [b])]
