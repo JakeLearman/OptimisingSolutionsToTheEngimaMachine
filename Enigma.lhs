@@ -7,6 +7,7 @@
 
 The reverse of each function has been implemented to account for testing the encryption
 
+> alphabet :: [Char]
 > alphabet = cycle ['A' .. 'Z']
 
 Two functions are then defined to handle the substitution of letter when passed throughout
@@ -55,13 +56,21 @@ Origionally the machine had 3 rotors but a later 2 were added in 1938, giving th
 choice of 3 out of 5. In 1939 the Navy added two more rotors: these are defined as strings below.
 A 4 rotor Enigma was implemented in 1942 so rotors have been added to account for that.
 
+> rotorI :: ([Char], [Char])
 > rotorI   = ("EKMFLGDQVZNTOWYHXUSPAIBRCJ", "Q")
+> rotorII :: ([Char], [Char])
 > rotorII  = ("AJDKSIRUXBLHWTMCQGZNPYFVOE", "E")
+> rotorIII :: ([Char], [Char])
 > rotorIII = ("BDFHJLCPRTXVZNYEIWGAKMUSQO", "V")
+> rotorIV :: ([Char], [Char])
 > rotorIV  = ("ESOVPZJAYQUIRHXLNFTGKDCMWB", "J")
+> rotorV :: ([Char], [Char])
 > rotorV   = ("VZBRGITYUPSDNHLXAWMJQOFECK", "Z")
+> rotorVI :: ([Char], [Char])
 > rotorVI  = ("JPGVOUMFYQBENHZRDKASXLICTW", "M")
+> rotorVII :: ([Char], [Char])
 > rotorVII = ("NZJHGRCXMYSWBOUFAIVLPEKQDT", "Z")
+> rotorVIII :: ([Char], [Char])
 > rotorVIII = ("FKQHTLXOCBJSPDZRAMEWNIUYGV", "M")
 
 The letters at the end of the rotor definintions are the turnover notches. These were point
@@ -75,12 +84,16 @@ pairs and then redirected back through the rotors via a different route. This en
 letter could be mapped back to itself and that encryption was the same as decryption - a  flaw
 which made cracking the machine possible.
 
+> reflectorA :: [Char]
 > reflectorA = "EJMZALYXVBWFCRQUONTSPIKHGD"
+> reflectorB :: [Char]
 > reflectorB = "YRUHQSLDPXNGOKMIEBFZCWVJAT"
+> reflectorC :: [Char]
 > reflectorC = "FVPJIAOYEDRZXWGCTKUQSBNMHL"
 
 Now we can define the Enigma machine we wish to use:
 
+> enigmaMachine :: Enigma
 > enigmaMachine = Enigma {
 >     rotors = [rotorI, rotorII, rotorIII],
 >     reflector = reflectorB,
@@ -138,6 +151,7 @@ The run machine function is used to traverse a string of chars, apply encryption
 > runMachine :: Traversable t => t Char -> t Char
 > runMachine cs = encryption (enigmaMachine) cs
 
+> main :: IO ()
 > main = do
 > 	input <- getLine
 >	let output = runMachine (map toUpper input)

@@ -1,13 +1,8 @@
 > module Menu where
 
-> import Enigma
 > import Crib
 > import Data.List
-> import Data.Maybe
 > import Data.Char
-> import Data.Graph (Graph)
-> import qualified Data.Graph as Graph
-> import Data.Array
 > import Data.Function
 > import Data.Ord
 
@@ -55,6 +50,7 @@ groupByVertex groups each pair into a list of each vertex and each letter that i
 > groupByVertex :: (Eq a, Ord a) => [(a, b)] -> [(a, [b])]
 > groupByVertex = map (\l -> (fst . head $ l, map snd l)) . groupBy ((==) `on` fst) . sortBy (comparing fst)
 
+> prepGraph :: [(Int, [Int])]
 > prepGraph = groupByVertex(tuplesToInt'(menuToTuple menu))
 
 -------------------------

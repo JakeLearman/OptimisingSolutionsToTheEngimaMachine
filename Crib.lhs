@@ -2,10 +2,8 @@
 
 > import Enigma 
 > import Data.List as List
-> import Data.Char
 > import Data.Ord
 > import Data.Tuple
-> import Data.Map as Map
 > import Data.Function
 
 This basic brute force will only account for the possible combinations of rotors, not the plugboard or reflectors
@@ -23,6 +21,7 @@ A function to create a list of all possible rotor combination
 
 A test machine with no rotors set up
 
+> testMachine :: Enigma
 > testMachine = Enigma {
 >     rotors = [],
 >     reflector = reflectorB,
