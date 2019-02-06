@@ -5,6 +5,7 @@
 > import Data.Char
 > import Data.Function
 > import Data.Ord
+> import Data.Graph
 
 ---------------
 Menu Generation
@@ -50,11 +51,34 @@ groupByVertex groups each pair into a list of each vertex and each letter that i
 > groupByVertex :: (Eq a, Ord a) => [(a, b)] -> [(a, [b])]
 > groupByVertex = map (\l -> (fst . head $ l, map snd l)) . groupBy ((==) `on` fst) . sortBy (comparing fst)
 
-> prepGraph :: [(Int, [Int])]
-> prepGraph = groupByVertex(tuplesToInt'(menuToTuple menu))
-
 -------------------------
 ----Graph Generation-----
 -------------------------
 
-type Graph = [(a, [b])]
+Graph made using fgl types where
+type Vertex = Int
+type Edge = (Vertex, Vertex)
+
+Bound are the bounds of the graph i.e. the highest and lowest value
+
+> bound :: (Vertex, Vertex)
+> bound = (65,90)
+
+> menuToGraph :: [[Char]] -> [Edge]
+> menuToGraph menu = tuplesToInt'(menuToTuple menu)
+
+> makeGraph :: Bounds -> [[Char]] -> Graph
+> makeGraph bound menu = buildG bound (menuToGraph menu)
+
+> listVertices :: Bounds -> [[Char]] -> [Vertex]
+> listVertices bound menu = vertices (makeGraph bound menu)
+
+> graph = makeGraph bound menu
+
+> reachableVertex :: Graph -> Vertex -> [Vertex]
+> reachableVertex graph vertex = reachable graph vertex
+
+> reachableVertex' :: Graph -> [Vertex] -> [[Vertex]]
+> reachableVertex' graph [] = []
+> reachableVertex' graph (v:vs) = reachableVertex graph v : reachableVertex' graph vs
+
