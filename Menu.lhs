@@ -1,11 +1,13 @@
 > module Menu where
 
 > import Crib
+> import DFA
 > import Data.List
 > import Data.Char
 > import Data.Function
 > import Data.Ord
 > import Data.Graph
+> import Data.Graph.Analysis.Algorithms.Common
 
 ---------------
 Menu Generation
