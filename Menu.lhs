@@ -1,13 +1,15 @@
 > module Menu where
 
 > import Crib
-> import DFA
 > import Data.List
 > import Data.Char
 > import Data.Function
 > import Data.Ord
-> import Data.Graph
-> import Data.Graph.Analysis.Algorithms.Common
+> import Data.Graph (Graph)
+> import qualified Data.Graph as Graph
+> import Data.Array
+
+ import Data.Graph.Analysis.Algorithms.Common
 
 ---------------
 Menu Generation
@@ -57,30 +59,76 @@ groupByVertex groups each pair into a list of each vertex and each letter that i
 ----Graph Generation-----
 -------------------------
 
+> graphPrep :: [[a]] -> [(a, a)] 
+> graphPrep [] = []
+> graphPrep (x:xs) = listToTuple x : graphPrep xs
+
+> graphPrep2 :: [[Char]] -> [(Int, [Int])]
+> graphPrep2 menu  = groupByVertex (tuplesToInt' (graphPrep menu))
+
+> makeGraph :: [(Int, [Int])] -> Graph
+> makeGraph list = array (minimum nodes, maximum nodes) list
+> 	where
+> 		nodes = map fst list
+ 
+> cyclicNodes :: Graph -> [Int]
+> cyclicNodes graph = map fst . filter isCyclicAssoc . assocs $ graph
+> 	where
+> 		isCyclicAssoc = uncurry $ reachableFromAny graph
+
+> reachableFromAny :: Graph -> Int -> [Int] -> Bool
+> reachableFromAny graph vertex = elem vertex . concatMap (Graph.reachable graph)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+This Code May be removed
+
+
+
+
+
+
 Graph made using fgl types where
 type Vertex = Int
 type Edge = (Vertex, Vertex)
 
+
+
 Bound are the bounds of the graph i.e. the highest and lowest value
 
-> bound :: (Vertex, Vertex)
-> bound = (65,90)
+ bound :: (Vertex, Vertex)
+ bound = (65,90)
 
-> menuToGraph :: [[Char]] -> [Edge]
-> menuToGraph menu = tuplesToInt'(menuToTuple menu)
+ menuToGraph :: [[Char]] -> [Edge]
+ menuToGraph menu = tuplesToInt'(menuToTuple menu)
 
-> makeGraph :: Bounds -> [[Char]] -> Graph
-> makeGraph bound menu = buildG bound (menuToGraph menu)
+ makeGraph :: Bounds -> [[Char]] -> Graph
+ makeGraph bound menu = buildG bound (menuToGraph menu)
 
-> listVertices :: Bounds -> [[Char]] -> [Vertex]
-> listVertices bound menu = vertices (makeGraph bound menu)
+ listVertices :: Bounds -> [[Char]] -> [Vertex]
+ listVertices bound menu = vertices (makeGraph bound menu)
 
-> graph = makeGraph bound menu
+ graph = makeGraph bound menu
 
-> reachableVertex :: Graph -> Vertex -> [Vertex]
-> reachableVertex graph vertex = reachable graph vertex
+reachableVertex :: Graph -> Vertex -> [Vertex]
+ reachableVertex graph vertex = reachable graph vertex
 
-> reachableVertex' :: Graph -> [Vertex] -> [[Vertex]]
-> reachableVertex' graph [] = []
-> reachableVertex' graph (v:vs) = reachableVertex graph v : reachableVertex' graph vs
-
+ reachableVertex' :: Graph -> [Vertex] -> [[Vertex]]
+ reachableVertex' graph [] = []
+ reachableVertex' graph (v:vs) = reachableVertex graph v : reachableVertex' graph vs
