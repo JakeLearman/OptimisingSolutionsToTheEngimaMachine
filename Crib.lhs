@@ -59,28 +59,20 @@ setUpForLoop removes any pairs containing spaces such that the list of tuples ha
 
 orderTuples orders the list of tuples in descending order according the the first letter in each pair.
 
-> orderTuples :: String -> String -> [(Char, Char)]
-> orderTuples crib encrypted = sortBy (comparing fst) (setUpForLoop (findNoCrashes crib encrypted))
+> orderTuples :: String -> String -> ((Char, Char) -> Char) -> [(Char, Char)]
+> orderTuples crib encrypted f = sortBy (comparing f) (setUpForLoop (findNoCrashes crib encrypted))
 
 This does the same as above but sorts by the second element
 
-> orderTuplesSnd :: String -> String -> [(Char, Char)]
-> orderTuplesSnd crib encrypted = sortBy (comparing snd) (setUpForLoop (findNoCrashes crib encrypted))
-
 groupTuples splits the list of ordered tuples into lists where the first value is the same
 
-> groupTuples :: String -> String -> [[(Char, Char)]]
-> groupTuples crib encrypted = groupBy ((==) `on` fst) ((orderTuples crib encrypted))
+> groupTuples :: String -> String -> ((Char, Char) -> Char) -> [[(Char, Char)]]
+> groupTuples crib encrypted f = groupBy ((==) `on` f) ((orderTuples crib encrypted f))
 
 invert inverts the order of the elements in a tuples
 
 > invert :: [(a, b)] -> [(b, a)]
 > invert = List.map swap
-
-groupTuplesSnd splits the list of ordered pairs into lists where the second element is the same and then sorted so that the second element is first
-
-> groupTuplesSnd :: String -> String -> [[(Char, Char)]]
-> groupTuplesSnd crib encrypted = groupBy ((==) `on` snd) (invert(orderTuplesSnd crib encrypted))
 
 Flatten flattens a list 
 
@@ -91,7 +83,8 @@ groupTuples' groups both grouped lists from groupTuples and groupTuplesSnd, flat
 then removes any duplicate values in the list
 
 > joinLists :: String -> String -> [[(Char, Char)]]
-> joinLists crib encrypted = (groupTuples crib encrypted) ++ (groupTuplesSnd crib encrypted)
+> joinLists crib encrypted = (groupTuples crib encrypted fst) ++ (groupTuples crib encrypted snd)
 
 > groupTuples' :: String -> String -> [(Char, Char)]
 > groupTuples' crib encrypted =  nub (flatten (joinLists crib encrypted))
+
