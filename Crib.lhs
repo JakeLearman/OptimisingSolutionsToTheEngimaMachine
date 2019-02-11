@@ -17,12 +17,13 @@ index in both strings
 > alignCrib [] [] = []
 > alignCrib crib encryptedOutput = List.map fst . List.filter (uncurry (==)) $ zip crib encryptedOutput
 
-filterAlignment returns a bool depending on whether or not cribs can be aligned without error
+filterAlignment returns a bool depending on whether or not cribs can be aligned without error. If there is an error then the crib
+and the encrypted string need to be realigned such that no clashes occur.
 
 > filterAlignment :: String -> String -> Bool
 > filterAlignment crib encryptedOutput = if alignCrib crib encryptedOutput == [] then True else False
 
-shiftCrib adds a space to the beginning of the crib such that it can be tested as a new crib for alignment
+shiftCrib adds a space to the beginning of the crib such that it can be tested as a new crib for alignment.
 
 > shiftCrib :: String -> String 
 > shiftCrib crib = " " ++ crib
@@ -57,14 +58,13 @@ setUpForLoop removes any pairs containing spaces such that the list of tuples ha
 > setUpForLoop :: [(Char, Char)] -> [(Char, Char)]
 > setUpForLoop alignedText = [c | c <- alignedText, fst c /= ' ']
 
-orderTuples orders the list of tuples in descending order according the the first letter in each pair.
+orderTuples orders the list of tuples in descending order according to the function passed into orderTuples, this is typically
+fst or snd used for taking the first or second element of a tuple..
 
 > orderTuples :: String -> String -> ((Char, Char) -> Char) -> [(Char, Char)]
 > orderTuples crib encrypted f = sortBy (comparing f) (setUpForLoop (findNoCrashes crib encrypted))
 
-This does the same as above but sorts by the second element
-
-groupTuples splits the list of ordered tuples into lists where the first value is the same
+groupTuples splits the list of ordered tuples into lists depending on the inputted function to groupTuples.
 
 > groupTuples :: String -> String -> ((Char, Char) -> Char) -> [[(Char, Char)]]
 > groupTuples crib encrypted f = groupBy ((==) `on` f) ((orderTuples crib encrypted f))
@@ -87,4 +87,3 @@ then removes any duplicate values in the list
 
 > groupTuples' :: String -> String -> [(Char, Char)]
 > groupTuples' crib encrypted =  nub (flatten (joinLists crib encrypted))
-
