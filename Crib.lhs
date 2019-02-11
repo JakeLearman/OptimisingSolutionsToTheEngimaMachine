@@ -74,16 +74,19 @@ invert inverts the order of the elements in a tuples
 > invert :: [(a, b)] -> [(b, a)]
 > invert = List.map swap
 
-Flatten flattens a list 
+Flatten flattens a list such that all elements are on the same depth.
 
 > flatten :: [[a]] -> [a]         
 > flatten xs = (\z n -> List.foldr (\x y -> List.foldr z y x) n xs) (:) []
 
-groupTuples' groups both grouped lists from groupTuples and groupTuplesSnd, flattens the list such that all elements are on the same level and
-then removes any duplicate values in the list
+joinLists combines the list of all pairs of letters ordered by both first and second element in each pair.
 
 > joinLists :: String -> String -> [[(Char, Char)]]
 > joinLists crib encrypted = (groupTuples crib encrypted fst) ++ (groupTuples crib encrypted snd)
+
+
+groupTuples' groups both grouped lists from groupTuples and groupTuplesSnd, flattens the list such that all elements are on the same level and
+then removes any duplicate values in the list
 
 > groupTuples' :: String -> String -> [(Char, Char)]
 > groupTuples' crib encrypted =  nub (flatten (joinLists crib encrypted))
