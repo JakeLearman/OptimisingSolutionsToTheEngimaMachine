@@ -67,7 +67,6 @@ groupByVertex groups each pair into a list of each vertex and each letter that i
 
 > findMaxCycle :: [(Char, Char)] -> Menu
 > findMaxCycle crib = maximumBy (\m1 m2 ->(compare (length m1) (length m2))) (findMenu crib)
-
  
 > crib = zip  "AABBCC" "CCBBAA"
 > test = findMaxCycle crib
