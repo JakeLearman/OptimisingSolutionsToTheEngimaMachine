@@ -12,7 +12,6 @@ Menu Generation
 ---------------
 A menu is a graph showing all the connections between the letters in both the crib and the encrypted Word
 
-
 > menu :: [[Char]]
 > menu = tuplesToList (groupTuples' "KEINEBESONDERENEREIGNISSE" "UAENFVRLBZPWMEPMIHFSRJXFMJKWRAXQEZ")
 
@@ -22,29 +21,10 @@ A menu is a graph showing all the connections between the letters in both the cr
 > listToTuple :: [a] -> (a,a)
 > listToTuple  [x,y] = (x,y)
 
-> c2i :: Char -> Int
-> c2i c = ord c
-
-> s2i :: String -> [Int]
-> s2i [] = []
-> s2i (x:xs) = c2i x : s2i xs
-
-> i2c :: Int -> Char
-> i2c i = chr i
-
-> menuToInt :: [String] -> [[Int]]
-> menuToInt [] = []
-> menuToInt (m:ms) = s2i m : menuToInt ms
-
 > menuToTuple :: [String] -> [(Char, Char)]
 > menuToTuple [] = []
 > menuToTuple (x:xs) = listToTuple x : menuToTuple xs
 
-> tuplesToInt :: (Char, Char) -> (Int, Int)
-> tuplesToInt t = (c2i(fst t), c2i(snd t))
-
-> tuplesToInt' :: [(Char, Char)] -> [(Int, Int)]
-> tuplesToInt' ts = map tuplesToInt ts
 
 groupByVertex groups each pair into a list of each vertex and each letter that is linked to that vertex
 
@@ -57,5 +37,37 @@ groupByVertex groups each pair into a list of each vertex and each letter that i
 
 > type Menu = [Int]
 
-> findMaxCycle :: [(Int, Int)] -> Menu
-> findMaxCycle crib = maximumBy (\m1 m2 ->(compare (length m1) (length m2))) (findMenus crib)
+> findMenu :: [(Char, Char)] -> [Menu]
+> findMenu crib = linkElements(findLink crib) [] []
+
+> linkElements :: [Menu] -> [Menu] -> [Menu] -> [Menu]
+> linkElements [] passiive closed = passiive
+> linkElements (m:ms) passiive closed 
+>   | not (null ms') = linkElements (ms ++ ms') passiive (m:closed)
+>   | otherwise = linkElements ms (m:passiive) closed
+>   where
+>   ms' = [lm | lm <- lms, filterDuplicates lm]
+>   lms = [m ++ om | (_:om) <- filteredMenu]
+>   filteredMenu = [mm | mm @ (mm1:_) <- (ms ++ passiive), mm1 == last m]
+
+> filterDuplicates ::Eq a => [a] -> Bool
+> filterDuplicates [] = True
+> filterDuplicates [_] = True
+> filterDuplicates (m:ms)
+>   | (elem m ms) = False
+>   | otherwise = filterDuplicates ms
+
+> findLink :: [(Char, Char)] -> [Menu]
+> findLink crib = [[xs, ys] | (xs, x) <- a, (ys, y) <- b, x == y]
+>   where
+>   (as, bs) = unzip crib
+>   a = zip indice as
+>   b = zip indice bs
+>   indice = [0 .. ((length crib) - 1)]
+
+> findMaxCycle :: [(Char, Char)] -> Menu
+> findMaxCycle crib = maximumBy (\m1 m2 ->(compare (length m1) (length m2))) (findMenu crib)
+
+ 
+> crib = zip  "AABBCC" "CCBBAA"
+> test = findMaxCycle crib
