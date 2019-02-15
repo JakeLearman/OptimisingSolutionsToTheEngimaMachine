@@ -12,9 +12,6 @@ Menu Generation
 ---------------
 A menu is a graph showing all the connections between the letters in both the crib and the encrypted Word
 
-> menu :: [[Char]]
-> menu = tuplesToList (groupTuples' "KEINEBESONDERENEREIGNISSE" "UAENFVRLBZPWMEPMIHFSRJXFMJKWRAXQEZ")
-
 > tuplesToList :: [(a,a)] -> [[a]]
 > tuplesToList = map (\(x,y) -> [x,y])
 
@@ -32,7 +29,7 @@ groupByVertex groups each pair into a list of each vertex and each letter that i
 > groupByVertex = map (\l -> (fst . head $ l, map snd l)) . groupBy ((==) `on` fst) . sortBy (comparing fst)
 
 -------------------------
-----Graph Generation-----
+----Menu Generation-----
 -------------------------
 
 > type Menu = [Int]
@@ -67,6 +64,7 @@ groupByVertex groups each pair into a list of each vertex and each letter that i
 
 > findMaxCycle :: [(Char, Char)] -> Menu
 > findMaxCycle crib = maximumBy (\m1 m2 ->(compare (length m1) (length m2))) (findMenu crib)
- 
-> crib = zip  "AABBCC" "CCBBAA"
-> test = findMaxCycle crib
+
+> menu :: [[Char]]
+> menu = tuplesToList (groupTuples' "KEINEBESONDERENEREIGNISSE" "UAENFVRLBZPWMEPMIHFSRJXFMJKWRAXQEZ")
+> test = findMaxCycle (menuToTuple menu)

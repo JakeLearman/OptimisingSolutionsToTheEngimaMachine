@@ -41,14 +41,14 @@ A function to create a list of all possible rotor combination
 > resetRotor (25, 0, 0)= (0, 0, 0)
 > resetRotor (l, 0, 0)=(l+1, 0, 0)
  
-> breakEnigma :: [(Char,Char)] -> Maybe(Offsets, SteckeredPair)
-> breakEnigma crib = breakEnigma' crib (findMaxCycle crib) (0,0,0) testMachine
+ breakEnigma :: [(Char,Char)] -> Maybe(Offsets, SteckeredPair)
+ breakEnigma crib = breakEnigma' crib (findMaxCycle crib) (0,0,0) testMachine
 
-> breakEnigma' :: [(Char,Char)] -> Menu -> Offsets -> Enigma -> Maybe(Offsets,SteckeredPair)
-> breakEnigma' crib menu offsets enigma
->  |newPair == Nothing && offsets == (25,25,25) = Nothing
->  |newPair == Nothing = breakEnigma' crib menu (stepOffset offsets) enigma
->  | otherwie = Just (offsets, (fromJust newPair))
->  where newPair = findPair crib menu [(fst (crib !! (menu !! 0)),'A')] offsets enigma
+ breakEnigma' :: [(Char,Char)] -> Menu -> Offsets -> Enigma -> Maybe(Offsets,SteckeredPair)
+ breakEnigma' crib menu offsets enigma
+  |newPair == Nothing && offsets == (25,25,25) = Nothing
+  |newPair == Nothing = breakEnigma' crib menu (stepOffset offsets) enigma
+  | otherwise = Just (offsets, (fromJust newPair))
+  where newPair = findPair crib menu [(fst (crib !! (menu !! 0)),'A')] offsets enigma
 
  
