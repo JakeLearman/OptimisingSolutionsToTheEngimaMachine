@@ -47,7 +47,7 @@ A function to create a list of all possible rotor combination
 > steckerExample :: SteckeredPair
 > steckerExample = [('A','B'), ('C','D'), ('E','F'),('G','H'), ('I','J')]
 
-> data SteckeredEnigma = Enigma {
+> data SteckeredEnigma = SteckeredEnigma {
 >	rotors :: [(String, String)], reflector :: String,
 >	grundstellung :: String, ringstellung :: String,
 >	plugboard :: String, steckerPair :: SteckeredPair } deriving (Eq, Show)
