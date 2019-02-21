@@ -44,6 +44,8 @@ wiring system that would be manually reconfigured by the operator using patch ca
 manually map letters together forming a 'steckered pair' of letters which swapped the letter
 respectively both before and after the rotor scrambling.
 
+> type SteckeredPair = [(Char,Char)]
+
 > data Enigma = Enigma {
 >	rotors :: [(String, String)], reflector :: String,
 >	grundstellung :: String, ringstellung :: String,

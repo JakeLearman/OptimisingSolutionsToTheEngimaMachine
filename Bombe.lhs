@@ -19,15 +19,6 @@ A function to create a list of all possible rotor combination
 > combinations (x : xs) = map ((,) x) xs ++ combinations xs
 
 > type Offsets = (Int,Int,Int)
-> type SteckeredPair = [(Char,Char)]
-
-> testMachine :: Enigma
-> testMachine = Enigma {
->     rotors = [rotorI, rotorII, rotorIII],
->     reflector = reflectorB,
->     grundstellung = "AAA",
->     ringstellung = "AAA",
->     plugboard = alphabet }
 
 > stepOffset :: Offsets -> Offsets
 > stepOffset (l, m, 25) = stepOffset' (l, m, 0)
@@ -41,14 +32,17 @@ A function to create a list of all possible rotor combination
 > resetRotor (25, 0, 0)= (0, 0, 0)
 > resetRotor (l, 0, 0)=(l+1, 0, 0)
  
- breakEnigma :: [(Char,Char)] -> Maybe(Offsets, SteckeredPair)
- breakEnigma crib = breakEnigma' crib (findMaxCycle crib) (0,0,0) testMachine
+> findLetter :: Char -> SteckeredPair -> Bool
+> findLetter letter pair 
+>  | filter (( == letter ) . fst) pair /= [] = False 
+>  | filter (( == letter ) . snd) pair /= [] = False
+>  | otherwise = True
 
- breakEnigma' :: [(Char,Char)] -> Menu -> Offsets -> Enigma -> Maybe(Offsets,SteckeredPair)
- breakEnigma' crib menu offsets enigma
-  |newPair == Nothing && offsets == (25,25,25) = Nothing
-  |newPair == Nothing = breakEnigma' crib menu (stepOffset offsets) enigma
-  | otherwise = Just (offsets, (fromJust newPair))
-  where newPair = findPair crib menu [(fst (crib !! (menu !! 0)),'A')] offsets enigma
+> getPair :: (Char, Char) -> SteckeredPair -> Maybe SteckeredPair
+> getPair (x, y) pair 
+>  | filter ( == (x, y)) pair /= [] || filter ( == (y, x)) pair /= [] = Just pair
+>  | findLetter x pair && findLetter y pair = Just ((x, y): pair) 
+>  | otherwise = Nothing   
 
- 
+> steckerExample :: SteckeredPair
+> steckerExample = [('A','B'), ('C','D'), ('E','F'),('G','H'), ('I','J')]
