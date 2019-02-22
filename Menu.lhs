@@ -22,7 +22,6 @@ A menu is a graph showing all the connections between the letters in both the cr
 > menuToTuple [] = []
 > menuToTuple (x:xs) = listToTuple x : menuToTuple xs
 
-
 groupByVertex groups each pair into a list of each vertex and each letter that is linked to that vertex
 
 > groupByVertex :: (Eq a, Ord a) => [(a, b)] -> [(a, [b])]
@@ -31,6 +30,9 @@ groupByVertex groups each pair into a list of each vertex and each letter that i
 -------------------------
 ----Menu Generation-----
 -------------------------
+
+A menu is a type coined by Alan Turing used to describe a relationship between letters in the crib and the cipher text. In this case
+these letters are converted to integers to allow for easier mathematical computation.
 
 > type Menu = [Int]
 
