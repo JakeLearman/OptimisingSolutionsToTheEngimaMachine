@@ -49,7 +49,8 @@ respectively both before and after the rotor scrambling.
 > data Enigma = Enigma {
 >	rotors :: [(String, String)], reflector :: String,
 >	grundstellung :: String, ringstellung :: String,
->	plugboard :: String } deriving (Eq, Show)
+>	plugboard :: String } 
+>   | Bombe Rotor Rotor Rotor Reflector SteckeredPair deriving (Eq, Show)
 
 Rotors:
 

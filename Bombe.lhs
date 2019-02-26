@@ -4,6 +4,7 @@
 > import Menu
 > import Data.Maybe
 > import Data.List
+> import Data.Char
 
 This basic brute force will only account for the possible combinations of rotors, not the plugboard or reflectors
 
@@ -23,7 +24,7 @@ offset to be taken into accoutn such that the it known where the signal will ent
 each digit represents a rotor
 
 > type Offsets = (Int,Int,Int)
-> type Stecker = [(Char,Char)]
+
 
 The stepOffset function is used to handle the rotation of the rotors, the right most integer is incremented once every time the 
 function is called on the triple. Once this number passes 25, it resets to 0 and increments the column to the left by 1. This ensures
@@ -64,8 +65,57 @@ returns true if the letter is not found in a pair.
 >  | findLetter x pair && findLetter y pair = Just ((x, y): pair) 
 >  | otherwise = Nothing   
 
-> steckerExample :: SteckeredPair
-> steckerExample = [('A','B'), ('C','D'), ('E','F'),('G','H'), ('I','J')]
+> steckerB :: SteckeredPair
+> steckerB = [('A','B'), ('C','D'), ('E','F'),('G','H'), ('I','J')]
 
-> data Bombe = Bombe {Rotor Rotor Rotor Reflector Stecker} deriving (Eq, Show)
-> bombe = bombe rotorI rotorII rotorIII reflectorB steckerExample
+> testBombe = Bombe rotorI rotorII rotorIII reflectorB steckerB  
+
+ followMenu :: [(Char, Char)] -> Menu -> Offsets -> Enigma -> Maybe SteckeredPair
+ followMenu _ [] _ (Bombe _ _ _ _ sp) = Just sp
+ followMenu crib menu offsets (Bombe r1 r2 r3 reflector sp)
+   | newPair == Nothing = Nothing
+   | otherwise followMenu crib (tail menu) offsets (Bombe r1 r2 r3 reflector (fromJust newPair))
+    where newPair = getPair ((snd (crib !! (head menu)))), runBombe(fst (crib !! (head menu))) (Bombe r1 r2 r3 reflector sp) (stepBombe offsets ((head menu) + 1)) sp
+
+> stepBombe :: Offsets -> Int -> Offsets
+> stepBombe offs 0 = offs
+> stepBombe offs n = stepBombe (stepOffset offs)(n - 1)
+
+> runBombe n (Bombe r1 r2 r3 reflector sp)(oR1, oR2, oR3) = 
+>   stecker(reverseEncryption (fst r3) oR3 (reverseEncryption (fst r2) oR2 (reverseEncryption (fst r1) oR1 
+>   (reflect(encrypt (fst r1) oR1 (encrypt (fst r2) oR2 (encrypt (fst r3) oR3 (stecker n sp)) reflector )))))) sp
+
+> reverseEncryption ::  String -> Int -> Char -> Char
+> reverseEncryption  cs n x =
+>  let
+>  c  = findPos x cs
+>  y = mod (c - n) 26
+>  in
+>   alphabet !! y
+
+> findPos :: Char -> String -> Int
+> findPos c xs = head [z | (y, z) <- (zip xs [0..25]), y == c]
+
+> stecker :: Char -> SteckeredPair -> Char
+> stecker c sp
+>  |null pair = c
+>  |c1 == c = c2
+>  |otherwise = c1
+>  where 
+>       pair = filter (\(y, z) -> (c == y || c == z)) sp
+>       [(c1, c2)] = pair
+
+> reflect :: Char -> Reflector -> Char
+> reflect c ref
+>  | c == x = y
+>  | otherwise = x
+>  where
+>   [(x, y)] = filter (\(a,b)->( c == a || c == b)) ref
+
+> encrypt :: String -> Int -> Char -> Char 
+> encrypt cs n c =  
+>  let
+>   c' = mod ((toASCII c) + n)  26  in  cs !! c'
+
+> toASCII :: Char -> Int
+> toASCII c = (ord c) - 65
