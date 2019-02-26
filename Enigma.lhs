@@ -58,21 +58,23 @@ Origionally the machine had 3 rotors but a later 2 were added in 1938, giving th
 choice of 3 out of 5. In 1939 the Navy added two more rotors: these are defined as strings below.
 A 4 rotor Enigma was implemented in 1942 so rotors have been added to account for that.
 
-> rotorI :: ([Char], [Char])
+> type Rotor = ([Char], [Char])
+
+> rotorI :: Rotor
 > rotorI   = ("EKMFLGDQVZNTOWYHXUSPAIBRCJ", "Q")
-> rotorII :: ([Char], [Char])
+> rotorII :: Rotor
 > rotorII  = ("AJDKSIRUXBLHWTMCQGZNPYFVOE", "E")
-> rotorIII :: ([Char], [Char])
+> rotorIII :: Rotor
 > rotorIII = ("BDFHJLCPRTXVZNYEIWGAKMUSQO", "V")
-> rotorIV :: ([Char], [Char])
+> rotorIV :: Rotor
 > rotorIV  = ("ESOVPZJAYQUIRHXLNFTGKDCMWB", "J")
-> rotorV :: ([Char], [Char])
+> rotorV :: Rotor
 > rotorV   = ("VZBRGITYUPSDNHLXAWMJQOFECK", "Z")
-> rotorVI :: ([Char], [Char])
+> rotorVI :: Rotor
 > rotorVI  = ("JPGVOUMFYQBENHZRDKASXLICTW", "M")
-> rotorVII :: ([Char], [Char])
+> rotorVII :: Rotor
 > rotorVII = ("NZJHGRCXMYSWBOUFAIVLPEKQDT", "Z")
-> rotorVIII :: ([Char], [Char])
+> rotorVIII :: Rotor
 > rotorVIII = ("FKQHTLXOCBJSPDZRAMEWNIUYGV", "M")
 
 The letters at the end of the rotor definintions are the turnover notches. These were point
@@ -86,11 +88,12 @@ pairs and then redirected back through the rotors via a different route. This en
 letter could be mapped back to itself and that encryption was the same as decryption - a  flaw
 which made cracking the machine possible.
 
-> reflectorA :: [Char]
+> type Reflector = [Char]
+> reflectorA :: Reflector
 > reflectorA = "EJMZALYXVBWFCRQUONTSPIKHGD"
-> reflectorB :: [Char]
+> reflectorB :: Reflector
 > reflectorB = "YRUHQSLDPXNGOKMIEBFZCWVJAT"
-> reflectorC :: [Char]
+> reflectorC :: Reflector
 > reflectorC = "FVPJIAOYEDRZXWGCTKUQSBNMHL"
 
 Now we can define the Enigma machine we wish to use:

@@ -23,6 +23,7 @@ offset to be taken into accoutn such that the it known where the signal will ent
 each digit represents a rotor
 
 > type Offsets = (Int,Int,Int)
+> type Stecker = [(Char,Char)]
 
 The stepOffset function is used to handle the rotation of the rotors, the right most integer is incremented once every time the 
 function is called on the triple. Once this number passes 25, it resets to 0 and increments the column to the left by 1. This ensures
@@ -66,7 +67,5 @@ returns true if the letter is not found in a pair.
 > steckerExample :: SteckeredPair
 > steckerExample = [('A','B'), ('C','D'), ('E','F'),('G','H'), ('I','J')]
 
-> data SteckeredEnigma = SteckeredEnigma {
->	rotors :: [(String, String)], reflector :: String,
->	grundstellung :: String, ringstellung :: String,
->	plugboard :: String, steckerPair :: SteckeredPair } deriving (Eq, Show)
+> data Bombe = Bombe {Rotor Rotor Rotor Reflector Stecker} deriving (Eq, Show)
+> bombe = bombe rotorI rotorII rotorIII reflectorB steckerExample
