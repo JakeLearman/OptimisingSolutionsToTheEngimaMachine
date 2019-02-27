@@ -25,7 +25,6 @@ each digit represents a rotor
 
 > type Offsets = (Int,Int,Int)
 
-
 The stepOffset function is used to handle the rotation of the rotors, the right most integer is incremented once every time the 
 function is called on the triple. Once this number passes 25, it resets to 0 and increments the column to the left by 1. This ensures
 that each letter of the alphabet is incremented at least once.
@@ -70,20 +69,22 @@ returns true if the letter is not found in a pair.
 
 > testBombe = Bombe rotorI rotorII rotorIII reflectorB steckerB  
 
- followMenu :: [(Char, Char)] -> Menu -> Offsets -> Enigma -> Maybe SteckeredPair
- followMenu _ [] _ (Bombe _ _ _ _ sp) = Just sp
- followMenu crib menu offsets (Bombe r1 r2 r3 reflector sp)
-   | newPair == Nothing = Nothing
-   | otherwise followMenu crib (tail menu) offsets (Bombe r1 r2 r3 reflector (fromJust newPair))
-    where newPair = getPair ((snd (crib !! (head menu)))), runBombe(fst (crib !! (head menu))) (Bombe r1 r2 r3 reflector sp) (stepBombe offsets ((head menu) + 1)) sp
+> followMenu :: [(Char, Char)] -> Menu -> Offsets -> Enigma -> Maybe SteckeredPair
+> followMenu _ [] _ (Bombe _ _ _ _ sp) = Just sp
+> followMenu crib menu offsets (Bombe r1 r2 r3 reflector sp)
+>     | newPair == Nothing = Nothing
+>     | otherwise followMenu (crib (tail menu) offsets (Bombe r1 r2 r3 reflector (fromJust newPair)))
+>      where 
+>      newPair = getPair (snd (crib !! (head menu))), runBombe(fst (crib !! (head menu))) (Bombe r1 r2 r3 reflector sp) (stepBombe offsets ((head menu) + 1)) sp
 
 > stepBombe :: Offsets -> Int -> Offsets
 > stepBombe offs 0 = offs
 > stepBombe offs n = stepBombe (stepOffset offs)(n - 1)
 
+> runBombe :: Char -> Enigma -> Offsets -> Char
 > runBombe n (Bombe r1 r2 r3 reflector sp)(oR1, oR2, oR3) = 
 >   stecker(reverseEncryption (fst r3) oR3 (reverseEncryption (fst r2) oR2 (reverseEncryption (fst r1) oR1 
->   (reflect(encrypt (fst r1) oR1 (encrypt (fst r2) oR2 (encrypt (fst r3) oR3 (stecker n sp)) reflector )))))) sp
+>   (reflect(encrypt (fst r1) oR1 (encrypt (fst r2) oR2 (encrypt (fst r3) oR3 (stecker n sp))))reflector)))) sp
 
 > reverseEncryption ::  String -> Int -> Char -> Char
 > reverseEncryption  cs n x =
@@ -110,7 +111,10 @@ returns true if the letter is not found in a pair.
 >  | c == x = y
 >  | otherwise = x
 >  where
->   [(x, y)] = filter (\(a,b)->( c == a || c == b)) ref
+>   [(x, y)] = filter (\(a,b)->( c == a || c == b)) (pairReflector ref)
+
+> pairReflector :: Reflector -> [(Char, Char)]
+> pairReflector ref = zip alphabet ref
 
 > encrypt :: String -> Int -> Char -> Char 
 > encrypt cs n c =  
