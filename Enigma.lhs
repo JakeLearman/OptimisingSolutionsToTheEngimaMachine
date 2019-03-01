@@ -50,7 +50,7 @@ respectively both before and after the rotor scrambling.
 >	rotors :: [(String, String)], reflector :: String,
 >	grundstellung :: String, ringstellung :: String,
 >	plugboard :: String } 
->   | Bombe { rotors :: [(String, String)], reflector :: String,
+>   | Bombe { rotors :: [Rotor], reflector :: String,
 >	grundstellung :: String, ringstellung :: String,
 >	plugboard :: String } deriving (Eq, Show)
 
@@ -159,8 +159,8 @@ The run machine function is used to traverse a string of chars, apply encryption
 > runMachine :: Traversable t => t Char -> t Char
 > runMachine cs = encryption (enigmaMachine) cs
 
-> main :: IO ()
-> main = do
+> encrypt :: IO ()
+> encrypt = do
 > 	input <- getLine
 >	let output = runMachine (map toUpper input)
 >	let decrypt = runMachine output
