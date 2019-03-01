@@ -8,7 +8,7 @@
 The reverse of each function has been implemented to account for testing the encryption
 
 > alphabet :: [Char]
-> alphabet = cycle ['A' .. 'Z']
+> alphabet =  ['A' .. 'Z']
 
 Two functions are then defined to handle the substitution of letter when passed throughout
 the various rotors in the machine.

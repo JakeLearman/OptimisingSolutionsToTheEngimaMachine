@@ -11,8 +11,11 @@ This basic brute force will only account for the possible combinations of rotors
 
 A list of all the rotors which could be used in the machine set up
 
-> rotorList :: [([Char],[Char])]
+> rotorList :: [Rotor]
 > rotorList = [rotorI, rotorII, rotorIII, rotorIV, rotorV, rotorVI, rotorVII, rotorVIII]
+
+> position :: [Int]
+> position = [1 .. 26]
 
 > steckerB :: SteckeredPair
 > steckerB = [('A','B'), ('C','D'), ('E','F'),('G','H'), ('I','J')]
@@ -21,7 +24,18 @@ A list of all the rotors which could be used in the machine set up
 > bombe = Enigma {
 >     rotors = [],
 >     reflector = reflectorB,
->     grundstellung = "AAA",
->     ringstellung = "AAA",
->     plugboard = alphabet }
+>     grundstellung = [],
+>     ringstellung = [],
+>     plugboard = alphabet}
 
+The groupInNs takes a list of elements and an integer n and returns all possible combinations of the elements in the list
+in sublists of size n.
+
+> groupInNs :: Eq a => [a] -> Int -> [[a]]
+> groupInNs xs n = filter ((n==). length . nub) $ mapM (const xs) [1..n]
+
+> breakEnigma = do
+>	plainText <- getLine
+>	putStrLn plainText
+>	let encrypted = runMachine (map toUpper plainText)
+>	putStrLn encrypted
