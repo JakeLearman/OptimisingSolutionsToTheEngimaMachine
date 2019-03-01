@@ -50,7 +50,9 @@ respectively both before and after the rotor scrambling.
 >	rotors :: [(String, String)], reflector :: String,
 >	grundstellung :: String, ringstellung :: String,
 >	plugboard :: String } 
->   | Bombe Rotor Rotor Rotor Reflector SteckeredPair deriving (Eq, Show)
+>   | Bombe { rotors :: [(String, String)], reflector :: String,
+>	grundstellung :: String, ringstellung :: String,
+>	plugboard :: String } deriving (Eq, Show)
 
 Rotors:
 
