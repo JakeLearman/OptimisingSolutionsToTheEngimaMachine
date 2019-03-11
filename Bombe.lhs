@@ -35,3 +35,14 @@ Fetch rotor combination fetches a set of rotors at a specifies index
 > fetchRotorCombination ::  Eq a => [a] -> Int -> [a]
 > fetchRotorCombination rs n = (groupInNs rs 3) !! n
 
+> runBombe :: Traversable t => t Char -> Int -> t Char
+> runBombe cs n = encryption (e) cs
+>   where e = Enigma {
+>     rotors = (fetchRotorCombination rotorList n),
+>     reflector = reflectorB, grundstellung = "AAA",
+>     ringstellung = "AAA", plugboard = alphabet }
+
+
+> rotorLength = length (groupInNs rotorList 3) 
+
+> runBombe' cs n = runBombe cs n : runBombe' cs n
