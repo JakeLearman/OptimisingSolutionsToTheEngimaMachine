@@ -42,7 +42,11 @@ Fetch rotor combination fetches a set of rotors at a specifies index
 >     reflector = reflectorB, grundstellung = "AAA",
 >     ringstellung = "AAA", plugboard = alphabet }
 
-
+> rotorLength :: Int
 > rotorLength = length (groupInNs rotorList 3) 
 
-> runBombe' cs n = runBombe cs n : runBombe' cs n
+> limitBombe :: Int -> Maybe Int
+> limitBombe n = if n < rotorLength then Just n else Nothing
+
+> runBombe' :: Traversable t => t Char -> Int -> [t Char]
+> runBombe' cs n = runBombe cs n : runBombe' cs (fromJust (limitBombe (succ n)))
