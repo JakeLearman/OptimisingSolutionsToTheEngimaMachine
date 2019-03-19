@@ -34,7 +34,7 @@ in sublists of size n.
 Fetch rotor combination fetches a set of rotors at a specifies index
 
 > fetchRotorCombination ::  Eq a => [a] -> Int -> [a]
-> fetchRotorCombination rs n = (groupInNs rs 3) !! n
+> fetchRotorCombination rs n = (groupInNs rs 3) !! n  
 
 > runBombe :: Traversable t => t Char -> Int -> t Char
 > runBombe cs n = encryption (e) cs
@@ -58,10 +58,6 @@ Fetch rotor combination fetches a set of rotors at a specifies index
 > prepBreak' :: Traversable t => t Char -> [[(Char, Char)]]
 > prepBreak' xs = [prepBreak x n| x <- runBombe' xs, n <- [0 .. (rotorLength -1)]]
 
-> crib1 = zip "KEINEBESONDERENEREIGNISSE" "RWIVTYRESXBFOGKUHQBAISE"
-
-> menu1 = menuToChar(findMenu crib1)
-
 > cribUp :: Eq a => [a] -> [(a,a)]
 > cribUp menu = [(x, y) | x <- menu, y <- menu , x /= y]
 
@@ -77,5 +73,23 @@ Fetch rotor combination fetches a set of rotors at a specifies index
 > fetchClosestMatch :: [[Char]] -> [(Char, Char)]
 > fetchClosestMatch menu = head(reverse(sortMatches(findClosestMatch' menu)))
 
-> findRotorCombination :: [[Char]] -> Maybe Int
-> findRotorCombination menu = elemIndex (fetchClosestMatch menu) (prepBreak' alphabet)
+> findRotorCombination :: [[Char]] -> [Maybe Int]
+> findRotorCombination menu = [elemIndex x y | x <- (fetchClosestMatch menu), y <- (prepBreak' alphabet)]
+
+> filterRotors :: [[Char]] -> [Maybe Int]
+> filterRotors menu = filter (/= Nothing) (findRotorCombination menu)
+
+> findRotorCombination' :: [[Char]] -> [Rotor]
+> findRotorCombination' menu = fetchRotorCombination rotorList ((fromJust(head (filterRotors menu))) - 1)
+
+> breakEnigma crib = encryption (e) (snd(unzip crib))
+>  where e = Enigma {
+>     rotors = (findRotorCombination' (menuToChar(findMenu crib))),
+>     reflector = reflectorB, grundstellung = "AAA",
+>     ringstellung = "AAA", plugboard = alphabet }
+
+
+> crib2 = zip "HELLOTHERE" "ILBDA"
+
+> menu1 = menuToChar(findMenu crib1)
+> menu2 = menuToChar(findMenu crib2)
