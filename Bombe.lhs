@@ -76,3 +76,6 @@ Fetch rotor combination fetches a set of rotors at a specifies index
 
 > fetchClosestMatch :: [[Char]] -> [(Char, Char)]
 > fetchClosestMatch menu = head(reverse(sortMatches(findClosestMatch' menu)))
+
+> findRotorCombination :: [[Char]] -> Maybe Int
+> findRotorCombination menu = elemIndex (fetchClosestMatch menu) (prepBreak' alphabet)
