@@ -103,7 +103,5 @@ joinMenu effectively concatenates two lists will removing any overlapping elemen
 > removeSubMenus :: [[Int]] -> [[Int]]
 > removeSubMenus ms = [m | m <-ms, null [ns | ns <- ms, (length ns) > (length m), m == (take (length m) ns)]]
 
-> crib1 = zip "KEINEBESONDERENEREIGNISSE" "RWIVTYRESXBFOGKUHQBAISE"
-
 > menuToChar :: [Menu] -> [[Char]]
 > menuToChar menu = [map chr (map (+65) m) |m <- menu]

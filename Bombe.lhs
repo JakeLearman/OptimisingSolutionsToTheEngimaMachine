@@ -5,6 +5,7 @@
 > import Data.Maybe
 > import Data.List
 > import Data.Char
+> import Data.Ord
 
 This basic brute force will only account for the possible combinations of rotors, not the plugboard or reflectors
 
@@ -48,5 +49,30 @@ Fetch rotor combination fetches a set of rotors at a specifies index
 > limitBombe :: Int -> Maybe Int
 > limitBombe n = if n < rotorLength then Just n else Nothing
 
-> runBombe' :: Traversable t => t Char -> Int -> [t Char]
-> runBombe' cs n = runBombe cs n : runBombe' cs (fromJust (limitBombe (succ n)))
+> runBombe' :: Traversable t => t Char -> [t Char]
+> runBombe' cs = [runBombe cs n | n <- [0 .. (rotorLength -1)]]
+
+> prepBreak :: p -> Int -> [(Char, Char)]
+> prepBreak xs n = zip alphabet $ runBombe alphabet n
+
+> prepBreak' :: Traversable t => t Char -> [[(Char, Char)]]
+> prepBreak' xs = [prepBreak x n| x <- runBombe' xs, n <- [0 .. (rotorLength -1)]]
+
+> crib1 = zip "KEINEBESONDERENEREIGNISSE" "RWIVTYRESXBFOGKUHQBAISE"
+
+> menu1 = menuToChar(findMenu crib1)
+
+> cribUp :: Eq a => [a] -> [(a,a)]
+> cribUp menu = [(x, y) | x <- menu, y <- menu , x /= y]
+
+> findClosestMatch :: [[Char]] -> Int -> [(Char, Char)]
+> findClosestMatch menu n =  intersect (cribUp (head menu)) (prepBreak alphabet n)
+
+> findClosestMatch' :: [[Char]] -> [[(Char, Char)]]
+> findClosestMatch' menu = [findClosestMatch menu n | n <- [0 .. (rotorLength -1)]]
+
+> sortMatches :: [[a]] -> [[a]]
+> sortMatches = sortBy (comparing length)
+
+> fetchClosestMatch :: [[Char]] -> [(Char, Char)]
+> fetchClosestMatch menu = head(reverse(sortMatches(findClosestMatch' menu)))
