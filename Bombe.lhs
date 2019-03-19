@@ -130,8 +130,4 @@ function.
 >     reflector = reflectorB, grundstellung = "AAA",
 >     ringstellung = "AAA", plugboard = alphabet }
 
-
-> crib2 = zip "HELLOTHERE" "ILBDA"
-
-> menu1 = menuToChar(findMenu crib1)
-> menu2 = menuToChar(findMenu crib2)
+> crib1 = zip "NOTHING" "YIHKDEZRMXNGPMUNQKOIUQTSGLFFCYQTMB"
