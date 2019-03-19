@@ -7,7 +7,8 @@
 
 The reverse of each function has been implemented to account for testing the encryption
 
-> alphabet = ['A' .. 'Z']
+> alphabet :: [Char]
+> alphabet =  ['A' .. 'Z']
 
 Two functions are then defined to handle the substitution of letter when passed throughout
 the various rotors in the machine.
@@ -43,8 +44,13 @@ wiring system that would be manually reconfigured by the operator using patch ca
 manually map letters together forming a 'steckered pair' of letters which swapped the letter
 respectively both before and after the rotor scrambling.
 
+> type SteckeredPair = [(Char,Char)]
+
 > data Enigma = Enigma {
 >	rotors :: [(String, String)], reflector :: String,
+>	grundstellung :: String, ringstellung :: String,
+>	plugboard :: String } 
+>   | Bombe { rotors :: [Rotor], reflector :: String,
 >	grundstellung :: String, ringstellung :: String,
 >	plugboard :: String } deriving (Eq, Show)
 
@@ -55,13 +61,23 @@ Origionally the machine had 3 rotors but a later 2 were added in 1938, giving th
 choice of 3 out of 5. In 1939 the Navy added two more rotors: these are defined as strings below.
 A 4 rotor Enigma was implemented in 1942 so rotors have been added to account for that.
 
+> type Rotor = ([Char], [Char])
+
+> rotorI :: Rotor
 > rotorI   = ("EKMFLGDQVZNTOWYHXUSPAIBRCJ", "Q")
+> rotorII :: Rotor
 > rotorII  = ("AJDKSIRUXBLHWTMCQGZNPYFVOE", "E")
+> rotorIII :: Rotor
 > rotorIII = ("BDFHJLCPRTXVZNYEIWGAKMUSQO", "V")
+> rotorIV :: Rotor
 > rotorIV  = ("ESOVPZJAYQUIRHXLNFTGKDCMWB", "J")
+> rotorV :: Rotor
 > rotorV   = ("VZBRGITYUPSDNHLXAWMJQOFECK", "Z")
+> rotorVI :: Rotor
 > rotorVI  = ("JPGVOUMFYQBENHZRDKASXLICTW", "M")
+> rotorVII :: Rotor
 > rotorVII = ("NZJHGRCXMYSWBOUFAIVLPEKQDT", "Z")
+> rotorVIII :: Rotor
 > rotorVIII = ("FKQHTLXOCBJSPDZRAMEWNIUYGV", "M")
 
 The letters at the end of the rotor definintions are the turnover notches. These were point
@@ -75,12 +91,17 @@ pairs and then redirected back through the rotors via a different route. This en
 letter could be mapped back to itself and that encryption was the same as decryption - a  flaw
 which made cracking the machine possible.
 
+> type Reflector = [Char]
+> reflectorA :: Reflector
 > reflectorA = "EJMZALYXVBWFCRQUONTSPIKHGD"
+> reflectorB :: Reflector
 > reflectorB = "YRUHQSLDPXNGOKMIEBFZCWVJAT"
+> reflectorC :: Reflector
 > reflectorC = "FVPJIAOYEDRZXWGCTKUQSBNMHL"
 
 Now we can define the Enigma machine we wish to use:
 
+> enigmaMachine :: Enigma
 > enigmaMachine = Enigma {
 >     rotors = [rotorI, rotorII, rotorIII],
 >     reflector = reflectorB,
@@ -137,10 +158,3 @@ The run machine function is used to traverse a string of chars, apply encryption
 
 > runMachine :: Traversable t => t Char -> t Char
 > runMachine cs = encryption (enigmaMachine) cs
-
-> main = do
-> 	input <- getLine
->	let output = runMachine (map toUpper input)
->	let decrypt = runMachine output
->	putStrLn output
->	putStrLn decrypt
