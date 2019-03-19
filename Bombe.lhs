@@ -124,10 +124,15 @@ back to its original plaintext.
 breakEnigma is used to break the encryption. This is done by making an Enigma machine with the rotors found using the above 
 function.
 
-> breakEnigma crib = encryption (e) (snd(unzip crib))
+> breakEnigma :: [(Char, Char)] -> [Char]
+> breakEnigma crib  = runMachine (snd(unzip crib))
 >  where e = Enigma {
 >     rotors = (findRotorCombination' (menuToChar(findMenu crib))),
 >     reflector = reflectorB, grundstellung = "AAA",
 >     ringstellung = "AAA", plugboard = alphabet }
 
-> crib1 = zip "NOTHING" "YIHKDEZRMXNGPMUNQKOIUQTSGLFFCYQTMB"
+> crib1 = zip "HELLO" "ILBDA"
+
+> crib2 = zip "BATTLEFIELD" "ADHFUNDBWPF"
+
+> crib3 = zip "INCOMINGTRANSMISSIONNOTHINGTOREPORT" "YIHKDEZRMXNGPMUTYAMVYESKXGYFREEJ"
