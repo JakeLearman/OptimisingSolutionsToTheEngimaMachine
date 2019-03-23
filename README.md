@@ -1,7 +1,5 @@
 # Optimising Solutions To The Engima Machine
 
-Description goes here..
-
 ### Running
 
 ```
