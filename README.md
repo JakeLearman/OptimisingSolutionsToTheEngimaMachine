@@ -20,10 +20,11 @@ Ok, one module loaded.
 *Enigma>
 
 ```
-The Enigma Machine is made up of various parts:
-##The rotors
+The Enigma Machine is made up of various parts. When choosing to encrypt some text, there are various options one can choose from in the machine's configuration.
 
- Rotor  | Encryption | Turn Over Notch|
+### The Rotors
+
+|Rotor  | Encryption | Turn Over Notch|
 | ------------- | -------------  | -------------|
 | RotorI | EKMFLGDQVZNTOWYHXUSPAIBRCJ | Q |
 | RotorII | AJDKSIRUXBLHWTMCQGZNPYFVOE | E |
@@ -35,6 +36,13 @@ The Enigma Machine is made up of various parts:
 | RotorVIII |FKQHTLXOCBJSPDZRAMEWNIUYGV|M|
 
 
+## The Reflectors
+
+| Reflector | Reflected Characters |
+| ------------- | ------------- |
+|reflectorA | EJMZALYXVBWFCRQUONTSPIKHGD |
+|reflectorB | YRUHQSLDPXNGOKMIEBFZCWVJAT |
+|reflectorC | FVPJIAOYEDRZXWGCTKUQSBNMHL |
 
 
 
