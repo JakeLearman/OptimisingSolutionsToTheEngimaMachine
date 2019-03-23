@@ -18,11 +18,10 @@ ghci Enigma
 [1 of 1] Compiling Enigma           ( Enigma.lhs, interpreted )
 Ok, one module loaded.
 *Enigma>
-
 ```
 The Enigma Machine is made up of various parts. When choosing to encrypt some text, there are various options one can choose from in the machine's configuration.
 
-### The Rotors
+## The Rotors
 
 |Rotor  | Encryption | Turn Over Notch|
 | ------------- | -------------  | -------------|
@@ -44,8 +43,58 @@ The Enigma Machine is made up of various parts. When choosing to encrypt some te
 |reflectorB | YRUHQSLDPXNGOKMIEBFZCWVJAT |
 |reflectorC | FVPJIAOYEDRZXWGCTKUQSBNMHL |
 
+```
+We can then define an Enigma machine as follows:
+> enigmaMachine :: Enigma
+> enigmaMachine = Enigma {
+>     rotors = [rotorI, rotorII, rotorIII],
+>     reflector = reflectorB,
+>     grundstellung = "AAA",
+>     ringstellung = "AAA",
+>     plugboard = alphabet }
 
 
+This Enigma machine has rotors 1-3 and reflectorB.
+```
+
+In order to encrypt some text we use the runMachine function where cs is some text we wish to encrypt and enigmaMachine is the machine we have set up.
+
+```
+> runMachine cs = encryption (enigmaMachine) cs
+```
+### Decrypting Some Text
+In order to decrypt some cipher text, you need to run Bombe.lhs
+```
+ghci Bombe.lhs
+
+[1 of 4] Compiling Enigma           ( Enigma.lhs, interpreted )
+[2 of 4] Compiling Crib             ( Crib.lhs, interpreted )
+[3 of 4] Compiling Menu             ( Menu.lhs, interpreted )
+[4 of 4] Compiling Bombe            ( Bombe.lhs, interpreted )
+Ok, four modules loaded.
+*Bombe>
+```
+Make note that several other scripts are used in this case.
+
+## Finding a menu
+In terms of cracking Enigma, a menu refers to a link between some cipher text and a suspected string of plain text such that mappings between the letters of both can be made. If we have some plain text "BATTLEFIELD" and some cipher text "ADHFUNDBWPF" we can zip them together like so:
+
+```
+> crib2 = zip "BATTLEFIELD" "ADHFUNDBWPF"
+```
+we then find a menu as follows:
+
+```
+*Bombe> menuToChar(findMenu(crib2))
+["HABKG"]
+```
+We can then call findRotorCombination' to find the rotors used to map the inputted crib and ciphertext.
+
+```
+*Bombe> findRotorCombination'(menuToChar(findMenu(crib2)))
+[("EKMFLGDQVZNTOWYHXUSPAIBRCJ","Q"),("BDFHJLCPRTXVZNYEIWGAKMUSQO","V"),("AJDKSIRUXBLHWTMCQGZNPYFVOE","E")]
+```
+In order to retrieve the plaintext, you can define a new Enigma machine with the above settings.
 
 ## Authors
 
