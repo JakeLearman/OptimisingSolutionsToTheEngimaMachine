@@ -22,8 +22,9 @@ Ok, one module loaded.
 ```
 The Enigma Machine is made up of various parts:
 ##The rotors
- Rotor  | Encryption | Turn Over Notch
-| ------------- | ------------- |-------|
+
+ Rotor  | Encryption | Turn Over Notch|
+| ------------- | -------------  | -------------|
 | RotorI | EKMFLGDQVZNTOWYHXUSPAIBRCJ | Q |
 | RotorII | AJDKSIRUXBLHWTMCQGZNPYFVOE | E |
 | RotorIII | BDFHJLCPRTXVZNYEIWGAKMUSQO | V |
