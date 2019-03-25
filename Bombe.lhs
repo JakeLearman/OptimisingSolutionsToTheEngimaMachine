@@ -119,12 +119,6 @@ back to its original plaintext.
 > findRotorCombination' :: [[Char]] -> [Rotor]
 > findRotorCombination' menu = fetchRotorCombination rotorList ((fromJust(head (filterRotors menu))) - 1)
 
-breakEnigma is used to break the encryption. This is done by making an Enigma machine with the rotors found using the above 
-function.
-
-> breakEnigma :: [(Char, Char)] -> [Char]
-> breakEnigma crib  = runMachine (snd(unzip crib))
-
 > crib1 :: [(Char, Char)]
 > crib1 = zip "HELLO" "ILBDA"
 
