@@ -1,10 +1,8 @@
 > module Bombe where
 
 > import Enigma
-> import Menu
 > import Data.Maybe
 > import Data.List
-> import Data.Char
 > import Data.Ord
 
 A list of all the rotors which could be used in the machine set up
@@ -126,13 +124,12 @@ function.
 
 > breakEnigma :: [(Char, Char)] -> [Char]
 > breakEnigma crib  = runMachine (snd(unzip crib))
->  where e = Enigma {
->     rotors = (findRotorCombination' (menuToChar(findMenu crib))),
->     reflector = reflectorB, grundstellung = "AAA",
->     ringstellung = "AAA", plugboard = alphabet }
 
+> crib1 :: [(Char, Char)]
 > crib1 = zip "HELLO" "ILBDA"
 
+> crib2 :: [(Char, Char)]
 > crib2 = zip "BATTLEFIELD" "ADHFUNDBWPF"
 
+> crib3 :: [(Char, Char)]
 > crib3 = zip "INCOMINGTRANSMISSIONNOTHINGTOREPORT" "YIHKDEZRMXNGPMUTYAMVYESKXGYFREEJ"
