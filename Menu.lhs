@@ -103,5 +103,5 @@ joinMenu effectively concatenates two lists will removing any overlapping elemen
 > removeSubMenus :: [[Int]] -> [[Int]]
 > removeSubMenus ms = [m | m <-ms, null [ns | ns <- ms, (length ns) > (length m), m == (take (length m) ns)]]
 
-> menuToChar :: [Menu] -> [[Char]]
+> menuToChar :: [Menu] -> [String]
 > menuToChar menu = [map chr (map (+65) m) |m <- menu]

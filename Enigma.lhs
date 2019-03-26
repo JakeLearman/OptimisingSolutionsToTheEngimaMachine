@@ -7,7 +7,7 @@
 
 The reverse of each function has been implemented to account for testing the encryption
 
-> alphabet :: [Char]
+> alphabet :: String
 > alphabet =  ['A' .. 'Z']
 
 Two functions are then defined to handle the substitution of letter when passed throughout
@@ -16,10 +16,10 @@ the various rotors in the machine.
 c is the c is the char for which substitution is being handled
 s is the substitution of which the permutation of the alphabet is being represented
 
-> substitute :: [Char] -> Char -> Char
+> substitute :: String -> Char -> Char
 > substitute s c = fromMaybe c $ lookup c $ zip alphabet s
 
-> unsubstitute :: [Char] -> Char -> Char
+> unsubstitute :: String -> Char -> Char
 > unsubstitute s c = fromMaybe c $ lookup c $ zip s alphabet
 
 A ceasar shift can also be implemented to account for the mapping of the alphabet to whatever
@@ -61,7 +61,7 @@ Origionally the machine had 3 rotors but a later 2 were added in 1938, giving th
 choice of 3 out of 5. In 1939 the Navy added two more rotors: these are defined as strings below.
 A 4 rotor Enigma was implemented in 1942 so rotors have been added to account for that.
 
-> type Rotor = ([Char], [Char])
+> type Rotor = (String, String)
 
 > rotorI :: Rotor
 > rotorI   = ("EKMFLGDQVZNTOWYHXUSPAIBRCJ", "Q")
@@ -91,7 +91,7 @@ pairs and then redirected back through the rotors via a different route. This en
 letter could be mapped back to itself and that encryption was the same as decryption - a  flaw
 which made cracking the machine possible.
 
-> type Reflector = [Char]
+> type Reflector = String
 > reflectorA :: Reflector
 > reflectorA = "EJMZALYXVBWFCRQUONTSPIKHGD"
 > reflectorB :: Reflector
@@ -126,12 +126,12 @@ sR refers to the starting value in that rotor. nR refers to the next value in th
 
 Next we apply the shift by conjugating with the alphabet
 
-> applyShift :: [Char] -> Char -> [Char]
+> applyShift :: String -> Char -> String
 > applyShift cs key = unshift key . substitute cs . shift key <$> alphabet
 
 Then we can apply the rotation to the shifted input
 
-> applyRotation :: Enigma -> [[Char]]
+> applyRotation :: Enigma -> [String]
 > applyRotation cs = zipWith applyShift (fst <$> rotors cs) $ zipWith unshift (ringstellung cs) $ grundstellung cs
 
 We can then follow the process of the enigma machine e through the shifting,

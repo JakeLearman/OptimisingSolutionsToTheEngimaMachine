@@ -38,7 +38,7 @@ Testing encryption and deciphering
 breakEnigma is used to break the encryption. This is done by making an Enigma machine with the rotors found using the above 
 function.
 
-> breakEnigma :: [(Char, Char)] -> [Char]
+> breakEnigma :: [(Char, Char)] -> String
 > breakEnigma crib  = runMachine (snd(unzip crib))
 
 > prop_BruteForce = breakEnigma (zip "INCOMINGTRANSMISSIONNOTHINGTOREPORT" (runMachine "NOTHINGTOREPORTWILLREPLYINANHOUR")) == "NOTHINGTOREPORTWILLREPLYINANHOUR"

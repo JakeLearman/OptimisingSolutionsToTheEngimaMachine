@@ -81,13 +81,13 @@ letter as long as they are not equal
 
 findClosestMatch is used to find the closest encrypted alphabet to the mappings found in the menu.
 
-> findClosestMatch :: [[Char]] -> Int -> [(Char, Char)]
+> findClosestMatch :: [String] -> Int -> [(Char, Char)]
 > findClosestMatch menu n =  intersect (cribUp (head menu)) (prepBreak alphabet n)
 
 findClosestMatch' is used to iterate through the list of encrypted alphabets and find the best match based upon the menu
 inputted
 
-> findClosestMatch' :: [[Char]] -> [[(Char, Char)]]
+> findClosestMatch' :: [String] -> [[(Char, Char)]]
 > findClosestMatch' menu = [findClosestMatch menu n | n <- [0 .. (rotorLength -1)]]
 
 sortMatches iis used to sort the matches by length
@@ -98,25 +98,25 @@ sortMatches iis used to sort the matches by length
 fetchClosestMatch uses the list of matches to find the largest match between the menu and the encrypted alphabet. This means
 that the largest majority of letter mappings can be found.
 
-> fetchClosestMatch :: [[Char]] -> [(Char, Char)]
+> fetchClosestMatch :: [String] -> [(Char, Char)]
 > fetchClosestMatch menu = head(reverse(sortMatches(findClosestMatch' menu)))
 
 findRotorCombination uses list comprehension in order to find if the closest matches in each menu can be found in a set
 encrypted alphabet. A maybe wrapper is used too handle any null elements.
 
-> findRotorCombination :: [[Char]] -> [Maybe Int]
+> findRotorCombination :: [String] -> [Maybe Int]
 > findRotorCombination menu = [elemIndex x y | x <- (fetchClosestMatch menu), y <- (prepBreak' alphabet)]
 
 filterRotors is used to remove all rotor combinations that return the nothing type meaning that only valid letters indexs are 
 found
 
-> filterRotors :: [[Char]] -> [Maybe Int]
+> filterRotors :: [String] -> [Maybe Int]
 > filterRotors menu = filter (/= Nothing) (findRotorCombination menu)
 
 findRotorCombination is used to find which specific set of rotors is used to decrypt the cipher text used to form the menu
 back to its original plaintext.
 
-> findRotorCombination' :: [[Char]] -> [Rotor]
+> findRotorCombination' :: [String] -> [Rotor]
 > findRotorCombination' menu = fetchRotorCombination rotorList ((fromJust(head (filterRotors menu))) - 1)
 
 > crib1 :: [(Char, Char)]
