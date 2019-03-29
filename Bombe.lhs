@@ -119,12 +119,3 @@ back to its original plaintext.
 
 > findRotorCombination' :: [String] -> [Rotor]
 > findRotorCombination' menu = fetchRotorCombination rotorList ((fromJust(head (filterRotors menu))) - 1)
-
-> crib1 :: [(Char, Char)]
-> crib1 = zip "HELLO" "ILBDA"
-
-> crib2 :: [(Char, Char)]
-> crib2 = zip "BATTLEFIELD" "ADHFUNDBWPF"
-
-> crib3 :: [(Char, Char)]
-> crib3 = zip "INCOMINGTRANSMISSIONNOTHINGTOREPORT" "YIHKDEZRMXNGPMUTYAMVYESKXGYFREEJ"
