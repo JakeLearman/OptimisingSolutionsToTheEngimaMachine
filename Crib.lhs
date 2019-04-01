@@ -39,7 +39,7 @@ returned [(' ','U'),(' ','A'),(' ','E'),(' ','N'),(' ','F'),('K','V'),('E','R'),
 for the N's and E's matching in the original postions of the crib.
 
 > findNoCrashes :: String -> String -> [(Char, Char)]
-> findNoCrashes crib encrypted =  if (filterAlignment crib encrypted) == True then (zip crib encrypted) else findNoCrashes (shiftCrib crib) encrypted
+> findNoCrashes crib encrypted =  if filterAlignment crib encrypted then (zip crib encrypted) else findNoCrashes (shiftCrib crib) encrypted
 
 Assuing that we have a valid crib and now have calculated the offset, we can then filter out all letters which are encrypted more than
 once. For example using the above example:
