@@ -19,6 +19,12 @@ Ok, one module loaded.
 ```
 The Enigma Machine is made up of various parts. When choosing to encrypt some text, there are various options one can choose from in the machine's configuration.
 
+
+
+
+
+
+
 ## The Rotors
 
 |Rotor  | Encryption | Turn Over Notch|
