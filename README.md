@@ -24,6 +24,17 @@ Ok, one module loaded.
 
 The Enigma Machine is made up of various parts. When choosing to encrypt some text, there are various options one can choose from in the machine's configuration. Each part will have varying effects of the complexity of the machines encryption. For the standard 3 rotor Enigma machine, typically the first 5 rotors were used in rotation and for the 4 rotor Enigma machine, a choice out of the 8 were used.  Although there are 3 options for reflectors, reflector B was most commonly used throughout WWII.
 
+
+
+## The Reflectors
+
+| Reflector | Reflected Characters |
+| ------------- | ------------- |
+|reflectorA | EJMZALYXVBWFCRQUONTSPIKHGD |
+|reflectorB | YRUHQSLDPXNGOKMIEBFZCWVJAT |
+|reflectorC | FVPJIAOYEDRZXWGCTKUQSBNMHL |
+
+
 ## The Rotors
 
 |Rotor  | Encryption | Turn Over Notch|
@@ -36,15 +47,6 @@ The Enigma Machine is made up of various parts. When choosing to encrypt some te
 | RotorVI | JPGVOUMFYQBENHZRDKASXLICTW |M|
 | RotorVII |NZJHGRCXMYSWBOUFAIVLPEKQDT|Z|
 | RotorVIII |FKQHTLXOCBJSPDZRAMEWNIUYGV|M|
-
-
-## The Reflectors
-
-| Reflector | Reflected Characters |
-| ------------- | ------------- |
-|reflectorA | EJMZALYXVBWFCRQUONTSPIKHGD |
-|reflectorB | YRUHQSLDPXNGOKMIEBFZCWVJAT |
-|reflectorC | FVPJIAOYEDRZXWGCTKUQSBNMHL |
 
 ```
 We can then define an Enigma machine as follows:
