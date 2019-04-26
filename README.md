@@ -101,6 +101,7 @@ We can then call findRotorCombination' to find the rotors used to map the inputt
 ```
 In order to retrieve the plaintext, you can define a new Enigma machine with the above settings.
 
+More information can be found in the [FullDissertation.pdf](FullDissertation.pdf) for this project.
 ## Authors
 
 * **Jake Learman** - (https://github.com/jakelearman)
