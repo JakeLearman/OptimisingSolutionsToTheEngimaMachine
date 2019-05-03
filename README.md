@@ -1,5 +1,7 @@
 # Optimising Solutions To The Engima Machine
 
+The aim of this project is to find a new method of cracking the Enigma machine. Below you will find a How-to guide so that you can run this software yourself.
+
 ### Running
 
 ```
@@ -8,7 +10,9 @@ You'll need ghci or some other Haskell interpreter/compiler to run this.
 The project has 2 main sections: encrypting the plantext using the Enigma machine, found in Enigma.lhs, and attempting to crack the Enimga encryption, comprised of Crib.lhs, Meny.lhs and Bombe.lhs. Some QuickCheck tests can be found in testEngima.lhs.
 
 ```
+
 ### Encrypting Some Text
+
 ```
 First you need to run the Enigma script, this is done as follows:
 ghci Enigma
@@ -17,7 +21,19 @@ ghci Enigma
 Ok, one module loaded.
 *Enigma>
 ```
-The Enigma Machine is made up of various parts. When choosing to encrypt some text, there are various options one can choose from in the machine's configuration.
+
+The Enigma Machine is made up of various parts. When choosing to encrypt some text, there are various options one can choose from in the machine's configuration. Each part will have varying effects of the complexity of the machines encryption. For the standard 3 rotor Enigma machine, typically the first 5 rotors were used in rotation and for the 4 rotor Enigma machine, a choice out of the 8 were used.  Although there are 3 options for reflectors, reflector B was most commonly used throughout WWII.
+
+
+
+## The Reflectors
+
+| Reflector | Reflected Characters |
+| ------------- | ------------- |
+|reflectorA | EJMZALYXVBWFCRQUONTSPIKHGD |
+|reflectorB | YRUHQSLDPXNGOKMIEBFZCWVJAT |
+|reflectorC | FVPJIAOYEDRZXWGCTKUQSBNMHL |
+
 
 ## The Rotors
 
@@ -31,15 +47,6 @@ The Enigma Machine is made up of various parts. When choosing to encrypt some te
 | RotorVI | JPGVOUMFYQBENHZRDKASXLICTW |M|
 | RotorVII |NZJHGRCXMYSWBOUFAIVLPEKQDT|Z|
 | RotorVIII |FKQHTLXOCBJSPDZRAMEWNIUYGV|M|
-
-
-## The Reflectors
-
-| Reflector | Reflected Characters |
-| ------------- | ------------- |
-|reflectorA | EJMZALYXVBWFCRQUONTSPIKHGD |
-|reflectorB | YRUHQSLDPXNGOKMIEBFZCWVJAT |
-|reflectorC | FVPJIAOYEDRZXWGCTKUQSBNMHL |
 
 ```
 We can then define an Enigma machine as follows:
@@ -94,6 +101,7 @@ We can then call findRotorCombination' to find the rotors used to map the inputt
 ```
 In order to retrieve the plaintext, you can define a new Enigma machine with the above settings.
 
+More information can be found in the [FullDissertation.pdf](FullDissertation.pdf) for this project.
 ## Authors
 
 * **Jake Learman** - (https://github.com/jakelearman)
