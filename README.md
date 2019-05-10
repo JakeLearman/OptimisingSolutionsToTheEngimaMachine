@@ -7,7 +7,7 @@ The aim of this project is to find a new method of cracking the Enigma machine. 
 ```
 You'll need ghci or some other Haskell interpreter/compiler to run this.
 
-The project has 2 main sections: encrypting the plantext using the Enigma machine, found in Enigma.lhs, and attempting to crack the Enimga encryption, comprised of Crib.lhs, Meny.lhs and Bombe.lhs. Some QuickCheck tests can be found in testEngima.lhs.
+The project has 2 main sections: encrypting the plantext using the Enigma machine, found in Enigma.lhs, and attempting to crack the Enimga encryption, comprised of Crib.lhs, Menu.lhs and Bombe.lhs. Some QuickCheck tests can be found in testEngima.lhs.
 
 ```
 
